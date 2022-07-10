@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"runtime"
 )
 
 func main() {
@@ -14,5 +15,7 @@ func main() {
 		return
 	}
 	fmt.Println("当前路径：", pwdPath)
-
+	abc := runtime.GOARCH
+	abc1 := runtime.GOOS
+	fmt.Println(abc,abc1)
 }
