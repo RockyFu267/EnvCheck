@@ -1,14 +1,17 @@
 package basefunc
 
-import "runtime"
+import (
+	"runtime"
+)
 
 //GetOsInfo 获取基础信息
 func GetOsInfo() OSInfo {
 	var tempInfo OSInfo
-	os := runtime.GOOS
-	arch := runtime.GOARCH
+	tmpOs := runtime.GOOS
+	tmpArch := runtime.GOARCH
 
-	tempInfo.OS = os
-	tempInfo.ARCH = arch
+	tempInfo.OperatingSystem = tmpOs
+	tempInfo.CPUARCH = tmpArch
+
 	return tempInfo
 }

@@ -17,5 +17,5 @@ func main() {
 	fmt.Println("当前路径：", pwdPath)
 	abc := runtime.GOARCH
 	abc1 := runtime.GOOS
-	fmt.Println(abc,abc1)
+	fmt.Println(abc, abc1)
 }

@@ -1,6 +1,6 @@
 package basefunc
 
 type OSInfo struct {
-	OS   string `json:"os"`
-	ARCH string `json:"arch"`
+	OperatingSystem   string `json:"operatingsystem"`
+	CPUARCH string `json:"cpuarch"`
 }
