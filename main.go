@@ -1,21 +1,26 @@
 package main
 
 import (
+	bf "EnvCheck/basefunc"
 	"fmt"
 	"log"
 	"os"
-	"runtime"
 )
 
 func main() {
 	pwdPath, err := os.Getwd()
 	if err != nil {
-		log.Println(err)
+		log.Println("Get pwdPATH ERROR: ", err)
 		//***结束***
 		return
 	}
 	fmt.Println("当前路径：", pwdPath)
-	abc := runtime.GOARCH
-	abc1 := runtime.GOOS
-	fmt.Println(abc, abc1)
+	res, err := bf.GetOsInfo()
+	if err != nil {
+		log.Println("Get OsInfo ERROR: ", err)
+		//***结束***
+		return
+	}
+	fmt.Println(res)
+
 }
