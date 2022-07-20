@@ -28,7 +28,7 @@ func GetHostInfo() (HostInfo, error) {
 	if tempInfo.Hypervisor == "" {
 		tempInfo.Hypervisor = "Physical"
 	} else {
-		tempInfo.Hypervisor = "virtual-" + tempInfo.Hypervisor
+		tempInfo.Hypervisor = "Virtual-" + tempInfo.Hypervisor
 	}
 
 	return tempInfo, nil
