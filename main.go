@@ -2,6 +2,7 @@ package main
 
 import (
 	bf "EnvCheck/basefunc"
+	"encoding/json"
 	"fmt"
 	"log"
 	"os"
@@ -15,12 +16,15 @@ func main() {
 		return
 	}
 	fmt.Println("当前路径：", pwdPath)
-	res, err := bf.GetOsInfo()
+	//获取本机信息
+	res, err := bf.GetHostInfo()
 	if err != nil {
 		log.Println("Get OsInfo ERROR: ", err)
 		//***结束***
 		return
 	}
-	fmt.Println(res)
+	resJson, _ := json.Marshal(res)
+	fmt.Println(string(resJson))
+	// fmt.Println(res)
 
 }

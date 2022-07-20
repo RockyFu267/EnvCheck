@@ -6,9 +6,9 @@ import (
 	"runtime"
 )
 
-//GetOsInfo 获取基础信息
-func GetOsInfo() (OSInfo, error) {
-	var tempInfo OSInfo
+//GetHostInfo 获取基础信息
+func GetHostInfo() (HostInfo, error) {
+	var tempInfo HostInfo
 	tmpOs := runtime.GOOS
 	tmpArch := runtime.GOARCH
 

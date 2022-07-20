@@ -6,9 +6,9 @@ import (
 	"testing"
 )
 
-func Test_GetOsInfo(t *testing.T) {
+func Test_GetHostInfo(t *testing.T) {
 
-	res, err := GetOsInfo()
+	res, err := GetHostInfo()
 	if err != nil {
 		log.Println(err)
 		return
