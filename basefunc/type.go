@@ -6,4 +6,5 @@ type HostInfo struct {
 	CPUARCH         string `json:"cpuarch,omitempty"`
 	HostName        string `json:"hostname,omitempty"`
 	Hypervisor      string `json:"hypervisor,omitempty"`
+	OS              OS     `json:"os"`
 }
