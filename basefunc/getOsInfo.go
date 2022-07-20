@@ -1,7 +1,6 @@
 package basefunc
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"runtime"
@@ -26,7 +25,11 @@ func GetHostInfo() (HostInfo, error) {
 	tempInfo.HostName = tempHostName
 
 	tempInfo.getHypervisor()
-	fmt.Println()
+	if tempInfo.Hypervisor == "" {
+		tempInfo.Hypervisor = "Physical"
+	} else {
+		tempInfo.Hypervisor = "virtual-" + tempInfo.Hypervisor
+	}
 
 	return tempInfo, nil
 }
