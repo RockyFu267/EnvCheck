@@ -18,3 +18,9 @@ func Test_GetHostInfo(t *testing.T) {
 	fmt.Println(res.OperatingSystem)
 
 }
+
+func Test_CheckHostName(t *testing.T) {
+	str := "aa{a-a.a"
+	res := CheckHostName(str)
+	fmt.Println(res)
+}
