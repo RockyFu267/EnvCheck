@@ -26,6 +26,7 @@ func GetHostInfo() (HostInfo, error) {
 	tempInfo.HostName.HostNameStr = tempHostName
 	tempInfo.HostName.CheckRes = tempHostNameCheck
 
+	//获取是物理机还是虚拟机
 	tempInfo.getHypervisor()
 	if tempInfo.Hypervisor == "" {
 		tempInfo.Hypervisor = "Physical"
