@@ -35,6 +35,9 @@ func GetHostInfo() (HostInfo, error) {
 	}
 	tempInfo.getOSInfo()
 
+	//获取CPU相关信息
+	tempInfo.getCPUInfo()
+
 	return tempInfo, nil
 }
 

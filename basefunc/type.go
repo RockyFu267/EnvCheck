@@ -4,6 +4,7 @@ package basefunc
 type HostInfo struct {
 	OperatingSystem string   `json:"operatingsystem,omitempty"`
 	CPUARCH         string   `json:"cpuarch,omitempty"`
+	CPU             CPU      `json:"cpu"`
 	HostName        HostName `json:"hostname"`
 	Hypervisor      string   `json:"hypervisor,omitempty"`
 	OS              OS       `json:"os"`
