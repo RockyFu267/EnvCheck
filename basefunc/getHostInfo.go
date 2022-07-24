@@ -41,6 +41,7 @@ func GetHostInfo() (HostInfo, error) {
 	tempInfo.getKernelInfo()
 	//获取内存相关信息
 	tempInfo.getMemoryInfo()
+	tempInfo.Memory.Size = tempInfo.Memory.Size / 1024
 
 	return tempInfo, nil
 }
