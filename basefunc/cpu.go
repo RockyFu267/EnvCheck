@@ -33,6 +33,22 @@ var (
 )
 
 func (si *HostInfo) getCPUInfo() {
+	if si.OS.Architecture == "amd64" {
+		resAvx2, err := bc.CmdAndChangeDirToResAllInOne("./", "cat /proc/cpuinfo |grep  'avx2'")
+		if err != nil {
+			log.Println("Get cpuinfo-ep error: ", err)
+		}
+		resAvx, err := bc.CmdAndChangeDirToResAllInOne("./", "cat /proc/cpuinfo |grep  'avx '")
+		if err != nil {
+			log.Println("Get cpuinfo-ep error: ", err)
+		}
+		resBmi2, err := bc.CmdAndChangeDirToResAllInOne("./", "cat /proc/cpuinfo |grep 'bmi2'")
+		if err != nil {
+			log.Println("Get cpuinfo-ep error: ", err)
+		}
+		fmt.Println(resAvx2, resAvx, resBmi2)
+
+	}
 	si.CPU.Threads = uint(runtime.NumCPU())
 
 	f, err := os.Open("/proc/cpuinfo")
@@ -89,20 +105,5 @@ func (si *HostInfo) getCPUInfo() {
 
 	si.CPU.Cpus = uint(len(cpu))
 	si.CPU.Cores = uint(len(core))
-	if si.OS.Architecture == "amd64" {
-		resAvx2, err := bc.CmdAndChangeDirToResAllInOne("./", "cat /proc/cpuinfo |grep  'avx2'")
-		if err != nil {
-			log.Println("Get cpuinfo-ep error: ", err)
-		}
-		resAvx, err := bc.CmdAndChangeDirToResAllInOne("./", "cat /proc/cpuinfo |grep  'avx '")
-		if err != nil {
-			log.Println("Get cpuinfo-ep error: ", err)
-		}
-		resBmi2, err := bc.CmdAndChangeDirToResAllInOne("./", "cat /proc/cpuinfo |grep 'bmi2'")
-		if err != nil {
-			log.Println("Get cpuinfo-ep error: ", err)
-		}
-		fmt.Println(resAvx2, resAvx, resBmi2)
-	}
 
 }
