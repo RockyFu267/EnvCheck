@@ -81,7 +81,7 @@ func CheckDir(path string) bool {
 	return err == nil
 }
 
-// //getMemorySie 获取内存大小
+// //getMemorySie 获取内存大小 手动检查文件
 // func getMemorySie() (int64, error) {
 // 	resSize, err := bc.CmdAndChangeDirToResAllInOne("./", "cat /Users/fuao/Downloads/proc/meminfo | grep 'MemTotal' | awk '{print $2}'")
 // 	if err != nil {
