@@ -71,3 +71,9 @@ func GetCPUArch() string {
 	tmpArch := runtime.GOARCH
 	return tmpArch
 }
+
+//CheckDir 检查文件或者目录是否存在
+func CheckDir(path string) bool {
+	_, err := os.Stat(path)
+	return err == nil
+}

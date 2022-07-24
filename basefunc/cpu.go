@@ -1,8 +1,10 @@
 package basefunc
 
 import (
+	bc "EnvCheck/basecmd"
 	"bufio"
 	"fmt"
+	"log"
 	"os"
 	"regexp"
 	"runtime"
@@ -19,6 +21,9 @@ type CPU struct {
 	Cpus    uint   `json:"cpus,omitempty"`    // number of physical CPUs
 	Cores   uint   `json:"cores,omitempty"`   // number of physical CPU cores
 	Threads uint   `json:"threads,omitempty"` // number of logical (HT) CPU cores
+	Avx2    bool   `json:"avx2,omitempty"`
+	Avx     bool   `json:"avx,omitempty"`
+	Bmi2    bool   `json:"bmi2,omitempty"`
 }
 
 var (
@@ -84,4 +89,20 @@ func (si *HostInfo) getCPUInfo() {
 
 	si.CPU.Cpus = uint(len(cpu))
 	si.CPU.Cores = uint(len(core))
+	if si.OS.Architecture == "amd64" {
+		resAvx2, err := bc.CmdAndChangeDirToResAllInOne("./", "cat /proc/cpuinfo |grep  'avx2'")
+		if err != nil {
+			log.Println("Get cpuinfo-ep error: ", err)
+		}
+		resAvx, err := bc.CmdAndChangeDirToResAllInOne("./", "cat /proc/cpuinfo |grep  'avx '")
+		if err != nil {
+			log.Println("Get cpuinfo-ep error: ", err)
+		}
+		resBmi2, err := bc.CmdAndChangeDirToResAllInOne("./", "cat /proc/cpuinfo |grep 'bmi2'")
+		if err != nil {
+			log.Println("Get cpuinfo-ep error: ", err)
+		}
+		fmt.Println(resAvx2, resAvx, resBmi2)
+	}
+
 }
