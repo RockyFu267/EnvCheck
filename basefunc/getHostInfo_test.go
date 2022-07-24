@@ -25,11 +25,11 @@ func Test_CheckHostName(t *testing.T) {
 	fmt.Println(res)
 }
 
-func Test_getMemorySie(t *testing.T) {
-	res, err := getMemorySie()
-	if err != nil {
-		log.Println(err)
-		return
-	}
-	fmt.Println(res)
-}
+// func Test_getMemorySie(t *testing.T) {
+// 	res, err := getMemorySie()
+// 	if err != nil {
+// 		log.Println(err)
+// 		return
+// 	}
+// 	fmt.Println(res)
+// }

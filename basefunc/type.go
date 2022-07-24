@@ -9,6 +9,7 @@ type HostInfo struct {
 	Hypervisor      string   `json:"hypervisor,omitempty"`
 	OS              OS       `json:"os"`
 	Kernel          Kernel   `json:"kernel"`
+	Memory          Memory   `json:"memorysize"`
 }
 
 type HostName struct {

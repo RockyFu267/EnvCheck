@@ -1,11 +1,9 @@
 package basefunc
 
 import (
-	bc "EnvCheck/basecmd"
 	"log"
 	"os"
 	"runtime"
-	"strconv"
 	"strings"
 )
 
@@ -41,6 +39,8 @@ func GetHostInfo() (HostInfo, error) {
 	tempInfo.getCPUInfo()
 	//获取内核相关信息
 	tempInfo.getKernelInfo()
+	//获取内存相关信息
+	tempInfo.getMemoryInfo()
 
 	return tempInfo, nil
 }
@@ -80,25 +80,25 @@ func CheckDir(path string) bool {
 	return err == nil
 }
 
-//getMemorySie 获取内存大小
-func getMemorySie() (int64, error) {
-	resSize, err := bc.CmdAndChangeDirToResAllInOne("./", "cat /Users/fuao/Downloads/proc/meminfo | grep 'MemTotal' | awk '{print $2}'")
-	if err != nil {
-		log.Println("Get MemorySize Error: ", err)
-		// return 0, err
-		return 0, err
-	}
-	resStr := resSize[0]
-	intTemp, err := strconv.ParseInt(resStr, 10, 64)
-	if err != nil {
-		log.Println("Get MemorySize Error: ", err)
-		// return 0, err
-		return 0, err
-	}
-	resInt := intTemp / 1024
-	if resInt < 1024 {
-		return 1, nil
-	}
-	resInt = resInt / 1024
-	return resInt, nil
-}
+// //getMemorySie 获取内存大小
+// func getMemorySie() (int64, error) {
+// 	resSize, err := bc.CmdAndChangeDirToResAllInOne("./", "cat /Users/fuao/Downloads/proc/meminfo | grep 'MemTotal' | awk '{print $2}'")
+// 	if err != nil {
+// 		log.Println("Get MemorySize Error: ", err)
+// 		// return 0, err
+// 		return 0, err
+// 	}
+// 	resStr := resSize[0]
+// 	intTemp, err := strconv.ParseInt(resStr, 10, 64)
+// 	if err != nil {
+// 		log.Println("Get MemorySize Error: ", err)
+// 		// return 0, err
+// 		return 0, err
+// 	}
+// 	resInt := intTemp / 1024
+// 	if resInt < 1024 {
+// 		return 1, nil
+// 	}
+// 	resInt = resInt / 1024
+// 	return resInt, nil
+// }
