@@ -33,6 +33,7 @@ var (
 )
 
 func (si *HostInfo) getCPUInfo() {
+	//arm不检查，鉴权通过容器化部署
 	if si.OS.Architecture == "amd64" {
 		resAvx2, err := bc.CmdAndChangeDirToResAllInOne("./", "cat /proc/cpuinfo |grep  'avx2'")
 		if err != nil {
@@ -46,8 +47,16 @@ func (si *HostInfo) getCPUInfo() {
 		if err != nil {
 			log.Println("Get cpuinfo-ep error: ", err)
 		}
-		fmt.Println(resAvx2, resAvx, resBmi2)
-		fmt.Println(len(resAvx2), len(resAvx), len(resBmi2))
+		//判断指令集的结果
+		if len(resAvx2) != 0 {
+			si.CPU.Avx2 = true
+		}
+		if len(resAvx) != 0 {
+			si.CPU.Avx = true
+		}
+		if len(resBmi2) != 0 {
+			si.CPU.Bmi2 = true
+		}
 
 	}
 	si.CPU.Threads = uint(runtime.NumCPU())
