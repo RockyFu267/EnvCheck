@@ -9,9 +9,9 @@ import (
 
 // Memory information.
 type Memory struct {
-	Type  string `json:"type,omitempty"`
-	Speed uint   `json:"speed,omitempty"` // RAM data rate in MT/s
-	Size  uint   `json:"size,omitempty"`  // RAM size in MB
+	Type string `json:"type,omitempty"`
+	// Speed uint   `json:"speed,omitempty"` // RAM data rate in MT/s
+	Size uint `json:"size,omitempty"` // RAM size in MB
 }
 
 func word(data []byte, index int) uint16 {
@@ -46,10 +46,10 @@ loop:
 		recLen := dmi[p+1]
 
 		switch recType {
-		case 4:
-			if si.CPU.Speed == 0 {
-				si.CPU.Speed = uint(word(dmi, p+0x16))
-			}
+		// case 4:
+		// 	if si.CPU.Speed == 0 {
+		// 		si.CPU.Speed = uint(word(dmi, p+0x16))
+		// 	}
 		case 17:
 			size := uint(word(dmi, p+0x0c))
 			if size == 0 || size == 0xffff || size&0x8000 == 0x8000 {
@@ -79,11 +79,11 @@ loop:
 				}
 			}
 
-			if si.Memory.Speed == 0 && recLen >= 0x17 {
-				if speed := uint(word(dmi, p+0x15)); speed != 0 {
-					si.Memory.Speed = speed
-				}
-			}
+			// if si.Memory.Speed == 0 && recLen >= 0x17 {
+			// 	if speed := uint(word(dmi, p+0x15)); speed != 0 {
+			// 		si.Memory.Speed = speed
+			// 	}
+			// }
 		case 19:
 			start := uint(dword(dmi, p+0x04))
 			end := uint(dword(dmi, p+0x08))
