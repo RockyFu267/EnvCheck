@@ -47,6 +47,7 @@ func (si *HostInfo) getCPUInfo() {
 			log.Println("Get cpuinfo-ep error: ", err)
 		}
 		fmt.Println(resAvx2, resAvx, resBmi2)
+		fmt.Println(len(resAvx2), len(resAvx), len(resBmi2))
 
 	}
 	si.CPU.Threads = uint(runtime.NumCPU())
