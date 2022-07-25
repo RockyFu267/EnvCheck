@@ -25,8 +25,8 @@ func main() {
 	}
 	// resJson, _ := json.Marshal(res)
 	// fmt.Println(string(resJson))
-	resJson1, _ := json.MarshalIndent(res, "", " ")
-	fmt.Println(string(resJson1))
+	resJson, _ := json.MarshalIndent(res, "", " ")
+	fmt.Println(string(resJson))
 	// fmt.Println(res)
 
 }
