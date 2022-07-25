@@ -23,8 +23,10 @@ func main() {
 		//***结束***
 		return
 	}
-	resJson, _ := json.Marshal(res)
-	fmt.Println(string(resJson))
+	// resJson, _ := json.Marshal(res)
+	// fmt.Println(string(resJson))
+	resJson1, _ := json.MarshalIndent(res, "", " ")
+	fmt.Println(string(resJson1))
 	// fmt.Println(res)
 
 }
