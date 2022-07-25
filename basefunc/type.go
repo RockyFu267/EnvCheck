@@ -13,6 +13,6 @@ type HostInfo struct {
 }
 
 type HostName struct {
-	HostNameStr string `json:"cpuarch,omitempty"`
+	HostNameStr string `json:"hostname,omitempty"`
 	CheckRes    bool   `json:"CheckRes"`
 }
