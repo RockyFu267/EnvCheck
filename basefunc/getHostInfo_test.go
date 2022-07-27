@@ -35,7 +35,18 @@ func Test_CheckHostName(t *testing.T) {
 // }
 
 func Test_getGPUInfo(t *testing.T) {
+	var si HostInfo
+	err := si.getGPUInfo()
+	if err != nil {
+		fmt.Println(err)
+	}
 
-	getGPUInfo()
+}
+
+func Test_DeleteExtraSpace(t *testing.T) {
+	tmpstr := "     asdasd 		[      ]			asdasd  ]]]]  asdasd   asdas  "
+	str := DeleteExtraSpace(tmpstr)
+
+	fmt.Println(str)
 
 }

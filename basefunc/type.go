@@ -10,6 +10,7 @@ type HostInfo struct {
 	OS              OS       `json:"os"`
 	Kernel          Kernel   `json:"kernel"`
 	Memory          Memory   `json:"memorysize"`
+	GPU             GPU      `json:"gpu"`
 }
 
 type HostName struct {

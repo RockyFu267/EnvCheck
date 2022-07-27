@@ -74,32 +74,3 @@ func GetCPUArch() string {
 	tmpArch := runtime.GOARCH
 	return tmpArch
 }
-
-//CheckDir 检查文件或者目录是否存在
-func CheckDir(path string) bool {
-	_, err := os.Stat(path)
-	return err == nil
-}
-
-// //getMemorySie 获取内存大小 手动检查文件
-// func getMemorySie() (int64, error) {
-// 	resSize, err := bc.CmdAndChangeDirToResAllInOne("./", "cat /Users/fuao/Downloads/proc/meminfo | grep 'MemTotal' | awk '{print $2}'")
-// 	if err != nil {
-// 		log.Println("Get MemorySize Error: ", err)
-// 		// return 0, err
-// 		return 0, err
-// 	}
-// 	resStr := resSize[0]
-// 	intTemp, err := strconv.ParseInt(resStr, 10, 64)
-// 	if err != nil {
-// 		log.Println("Get MemorySize Error: ", err)
-// 		// return 0, err
-// 		return 0, err
-// 	}
-// 	resInt := intTemp / 1024
-// 	if resInt < 1024 {
-// 		return 1, nil
-// 	}
-// 	resInt = resInt / 1024
-// 	return resInt, nil
-// }
