@@ -33,3 +33,9 @@ func Test_CheckHostName(t *testing.T) {
 // 	}
 // 	fmt.Println(res)
 // }
+
+func Test_getGPUInfo(t *testing.T) {
+
+	getGPUInfo()
+
+}
