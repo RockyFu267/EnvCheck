@@ -21,7 +21,7 @@ func Test_CmdAndChangeDirToRes(t *testing.T) {
 }
 
 func Test_CmdAndChangeDirToResAllInOne(t *testing.T) {
-	res, err := CmdAndChangeDirToResAllInOne("/Users/fuao/Downloads/", "ls")
+	res, err := CmdAndChangeDirToResAllInOne("/Users/fuao/Downloads/", "lscpi")
 	if err != nil {
 		log.Println("cmd.StdoutPipe: ", err)
 		return
