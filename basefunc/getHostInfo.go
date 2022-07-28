@@ -4,18 +4,13 @@ import (
 	bc "EnvCheck/basecmd"
 	"log"
 	"os"
-	"runtime"
+	_ "runtime" //暂时不用
 	"strings"
 )
 
 //GetHostInfo 获取基础信息
 func GetHostInfo() (HostInfo, error) {
 	var tempInfo HostInfo
-
-	//获取架构并赋值
-	tmpArch := GetCPUArch()
-	tempInfo.CPUARCH = tmpArch
-
 	//获取主机名并赋值
 	tempHostName, tempHostNameCheck, err := GetHostName()
 	if err != nil {
@@ -92,8 +87,3 @@ func CheckHostName(input string) bool {
 
 }
 
-//GetCPUArch 获取cpu架构
-func GetCPUArch() string {
-	tmpArch := runtime.GOARCH
-	return tmpArch
-}

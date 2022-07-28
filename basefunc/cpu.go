@@ -14,13 +14,14 @@ import (
 
 // CPU information.
 type CPU struct {
+	CPUARCH         string          `json:"cpuarch,omitempty"`
+	Threads uint   `json:"threads,omitempty"` // number of logical (HT) CPU cores
 	Vendor  string `json:"vendor,omitempty"`
 	Model   string `json:"model,omitempty"`
 	Speed   uint   `json:"speed,omitempty"`   // CPU clock rate in MHz
 	Cache   uint   `json:"cache,omitempty"`   // CPU cache size in KB
 	Cpus    uint   `json:"cpus,omitempty"`    // number of physical CPUs
 	Cores   uint   `json:"cores,omitempty"`   // number of physical CPU cores
-	Threads uint   `json:"threads,omitempty"` // number of logical (HT) CPU cores
 	Avx2    bool   `json:"avx2,omitempty"`
 	Avx     bool   `json:"avx,omitempty"`
 	Bmi2    bool   `json:"bmi2,omitempty"`
@@ -33,6 +34,9 @@ var (
 )
 
 func (si *HostInfo) getCPUInfo() {
+	//获取架构并赋值   
+	si.CPU.CPUARCH  = GetCPUArch()
+
 	//arm不检查，鉴权通过容器化部署
 	if si.OS.Architecture == "amd64" {
 		resAvx2, err := bc.CmdAndChangeDirToResAllInOne("./", "cat /proc/cpuinfo |grep  'avx2'")
@@ -116,4 +120,10 @@ func (si *HostInfo) getCPUInfo() {
 	si.CPU.Cpus = uint(len(cpu))
 	si.CPU.Cores = uint(len(core))
 
+}
+
+//GetCPUArch 获取cpu架构
+func GetCPUArch() string {
+	tmpArch := runtime.GOARCH
+	return tmpArch
 }

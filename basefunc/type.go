@@ -2,8 +2,7 @@ package basefunc
 
 //OSInfo 主机信息
 type HostInfo struct {
-	OperatingSystem string          `json:"operatingsystem,omitempty"`
-	CPUARCH         string          `json:"cpuarch,omitempty"`
+	// CPUARCH         string          `json:"cpuarch,omitempty"`     //暂时不用这个方法
 	CPU             CPU             `json:"cpu"`
 	HostName        HostName        `json:"hostname"`
 	Hypervisor      string          `json:"hypervisor,omitempty"`

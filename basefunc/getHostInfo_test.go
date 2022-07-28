@@ -13,9 +13,8 @@ func Test_GetHostInfo(t *testing.T) {
 		log.Println(err)
 		return
 	}
-	fmt.Println(res.CPUARCH)
+	// fmt.Println(res.CPUARCH)
 	fmt.Println(res.HostName)
-	fmt.Println(res.OperatingSystem)
 
 }
 
