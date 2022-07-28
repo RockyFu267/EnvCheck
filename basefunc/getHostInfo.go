@@ -46,6 +46,8 @@ func GetHostInfo() (HostInfo, error) {
 	tempInfo.getGPUInfo()
 	//获取网卡相关信息
 	tempInfo.getNetworkInfo()
+	//获取磁盘信息
+	tempInfo.getStorageInfo()
 
 	return tempInfo, nil
 }

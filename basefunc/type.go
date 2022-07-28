@@ -12,6 +12,7 @@ type HostInfo struct {
 	Memory          Memory          `json:"memorysize"`
 	GPU             GPU             `json:"gpu"`
 	Network         []NetworkDevice `json:"network"`
+	Storage         []StorageDevice `json:"storage"`
 }
 
 type HostName struct {
