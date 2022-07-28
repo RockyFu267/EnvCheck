@@ -3,7 +3,6 @@ package basefunc
 import (
 	bc "EnvCheck/basecmd"
 	gpu "EnvCheck/gpuid"
-	"fmt"
 	"log"
 	"regexp"
 )
@@ -62,35 +61,6 @@ func (si *HostInfo) getGPUInfo() {
 	} else {
 		si.GPU.Nouveau = true
 	}
-	// modelId := `1bb3`
-	// filterStr := `(?m)^` + modelId + `.*\s`
-	// reg := regexp.MustCompile(filterStr)
-
-	// strList := reg.FindAllString(gpu.GPUMap, -1)
-	// //如果查询不到
-	// if len(strList) == 0 {
-	// 	log.Println("Get gpuinfo-mode error: need update ID-Map")
-	// 	si.GPU.Model = "unknown"
-	// 	return
-	// }
-	// Model := strList[0]
-	// //
-	// fmt.Println(Model)
-	// Model = DeleteExtraSpace(Model)
-	// //
-	// fmt.Println(Model)
-
-	// //标记截取位置
-	// var kTmp int
-	// for k, v := range Model {
-	// 	if v == ' ' {
-	// 		kTmp = k
-	// 		break
-	// 	}
-	// }
-	// //
-	// fmt.Println(Model[kTmp+1:])
-	// si.GPU.Model = Model[kTmp+1:]
 
 }
 
@@ -106,11 +76,7 @@ func findModel(input string) string {
 		return "unknown"
 	}
 	Model := strList[0]
-	//
-	fmt.Println(Model)
 	Model = DeleteExtraSpace(Model)
-	//
-	fmt.Println(Model)
 
 	//标记截取位置
 	var kTmp int
@@ -120,7 +86,7 @@ func findModel(input string) string {
 			break
 		}
 	}
-	//
+
 	return Model[kTmp+1:]
 
 }
