@@ -1,6 +1,7 @@
 package basefunc
 
 import (
+	bc "EnvCheck/basecmd"
 	"log"
 	"os"
 	"runtime"
@@ -48,6 +49,8 @@ func GetHostInfo() (HostInfo, error) {
 	tempInfo.getNetworkInfo()
 	//获取磁盘信息
 	tempInfo.getStorageInfo()
+	//获取系统时区
+	tempInfo.GetTimeZone()
 
 	return tempInfo, nil
 }
@@ -62,6 +65,20 @@ func GetHostName() (string, bool, error) {
 	//检查主机名规范
 	resCheck := CheckHostName(res)
 	return res, resCheck, nil
+}
+
+//GetTimeZone 获取主机名
+func (si *HostInfo) GetTimeZone() {
+	res, err := bc.CmdAndChangeDirToResAllInOne("./", "date +%Z")
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	if len(res) == 0 {
+		return
+	}
+	si.Others.TimeZone = res[0]
+
 }
 
 //CheckHostName 检查主机名是否只包含a-z,0-9,-,.

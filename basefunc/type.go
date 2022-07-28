@@ -13,9 +13,14 @@ type HostInfo struct {
 	GPU             GPU             `json:"gpu"`
 	Network         []NetworkDevice `json:"network"`
 	Storage         []StorageDevice `json:"storage"`
+	Others          Others          `json:"others"`
 }
 
 type HostName struct {
 	HostNameStr string `json:"hostname,omitempty"`
 	CheckRes    bool   `json:"CheckRes"`
+}
+
+type Others struct {
+	TimeZone string `json:"timezone,omitempty"`
 }
