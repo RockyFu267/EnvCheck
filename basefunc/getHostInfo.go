@@ -44,6 +44,8 @@ func GetHostInfo() (HostInfo, error) {
 	tempInfo.Memory.Size = tempInfo.Memory.Size / 1024
 	//获取显卡相关信息
 	tempInfo.getGPUInfo()
+	//获取网卡相关信息
+	tempInfo.getNetworkInfo()
 
 	return tempInfo, nil
 }
