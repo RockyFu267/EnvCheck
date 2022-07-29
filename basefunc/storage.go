@@ -3,7 +3,6 @@ package basefunc
 import (
 	bc "EnvCheck/basecmd"
 	_ "bufio"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -95,7 +94,7 @@ func (si *HostInfo) getRootDirSize() {
 		log.Println("Get RootDirSize error: ", err)
 		return
 	}
-	//找出 /
+	//找出 / 对应的结果
 	var resTmp string
 	for _, v := range resLsblk {
 		if v[len(v)-1:] == "/" {
@@ -103,10 +102,7 @@ func (si *HostInfo) getRootDirSize() {
 			break
 		}
 	}
-	fmt.Println(resLsblk, "111111")
-	fmt.Println(resTmp, "222222222")
 	resTmp = DeleteExtraSpace(resTmp)
-	fmt.Println(resTmp, "3333333333")
 	res := strings.Fields(resTmp)
 	si.Storage.RootDirSize = res[3]
 }
