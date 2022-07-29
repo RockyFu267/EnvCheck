@@ -87,3 +87,7 @@ func CheckHostName(input string) bool {
 
 }
 
+//get 获取磁盘分区
+//df -Th | grep -v devtmpfs | grep -v tmpfs |  grep -v overlay | grep data | awk 'NR>1'      只关注data
+
+
