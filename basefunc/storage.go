@@ -98,7 +98,7 @@ func (si *HostInfo) getRootDirSize() {
 	//找出 /
 	var resTmp string
 	for _, v := range resLsblk {
-		if v[:len(v)-1] == "/" {
+		if v[len(v)-1:] == "/" {
 			resTmp = v
 			break
 		}
