@@ -21,5 +21,22 @@
   - Virtual machine or physical machine
 + Get kernel information
   - Kernel version
-
++ Get memory information
+  - Type
+  - Size
++ Get network card information
+  - Network card name
+  - MAC address 
+  - Rate
++ Get disk information
+  - Size of system root path
+  - Whether there is a mount point of the data volume </data>, the size of the mount point of </data>, and the type of Mount volume of </data>
+  - Number of disks
+  - Size of disk
+  - Type of disk
++ Get the time zone
++ Turn off the firewall
++ Check whether docker is installed
++ Check whether k8s is installed
++ Get all ports currently in use
 
