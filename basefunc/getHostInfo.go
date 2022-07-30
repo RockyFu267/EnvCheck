@@ -50,6 +50,8 @@ func GetHostInfo() (HostInfo, error) {
 	tempInfo.stopFireWall()
 	//检查软件以及端口
 	tempInfo.serviceCheck()
+	//获取版本信息
+	tempInfo.getMetaInfo()
 
 	return tempInfo, nil
 }

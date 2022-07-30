@@ -1,8 +1,11 @@
 package basefunc
 
+// Version of the EnvCheck library.
+const Version = "0.0.1"
+
 //OSInfo 主机信息
 type HostInfo struct {
-	// CPUARCH         string          `json:"cpuarch,omitempty"`     //暂时不用这个方法
+	Meta       Meta            `json:"meta"`
 	CPU        CPU             `json:"cpu"`
 	HostName   HostName        `json:"hostname"`
 	Hypervisor string          `json:"hypervisor,omitempty"`
@@ -35,7 +38,6 @@ type Others struct {
 	Firewall     Firewall     `json:"firewall"`
 	ServiceCheck ServiceCheck `json:"service_check"`
 }
-
 
 type Firewall struct {
 	Stop    bool `json:"stop"`
