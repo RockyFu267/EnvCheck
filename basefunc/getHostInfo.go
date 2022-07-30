@@ -48,6 +48,8 @@ func GetHostInfo() (HostInfo, error) {
 	tempInfo.GetTimeZone()
 	//关闭防火墙
 	tempInfo.stopFireWall()
+	//检查软件以及端口
+	tempInfo.serviceCheck()
 
 	return tempInfo, nil
 }

@@ -31,9 +31,11 @@ type DataDir struct {
 	Type            string `json:"type,omitempty"`
 }
 type Others struct {
-	TimeZone string   `json:"timezone,omitempty"`
-	Firewall Firewall `json:"firewall"`
+	TimeZone     string       `json:"timezone,omitempty"`
+	Firewall     Firewall     `json:"firewall"`
+	ServiceCheck ServiceCheck `json:"service_check"`
 }
+
 
 type Firewall struct {
 	Stop    bool `json:"stop"`
