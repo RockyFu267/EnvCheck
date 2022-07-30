@@ -2,6 +2,7 @@ package basefunc
 
 import (
 	bc "EnvCheck/basecmd"
+	"fmt"
 	"log"
 )
 
@@ -35,12 +36,14 @@ func (si *HostInfo) serviceCheck() {
 		return
 	}
 	for _, v := range resSSList {
-		v = afterColon(v)
-		if _, ok := portMap[v]; ok {
+		tmpV := afterColon(v)
+		if _, ok := portMap[tmpV]; ok {
 			continue
 		} else {
-			portList = append(portList, v)
+			portList = append(portList, tmpV)
 		}
+		//
+		fmt.Println(portMap, tmpV)
 	}
 	si.Others.ServiceCheck.PortList = portList
 }
