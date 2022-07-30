@@ -10,4 +10,10 @@
   - Number of CPU cores
   - Whether the instruction set supports (avx2, AVX, bmi2) 
 + Get GPU
+  - Is there an NVIDIA graphics card
+  - Number of graphics cards
+  - Graphics card type
+  - Is Nouveau installed
+  - Whether the driver is installed
 + Get OS
+  - Operating system version
