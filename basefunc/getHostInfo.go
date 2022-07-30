@@ -46,6 +46,8 @@ func GetHostInfo() (HostInfo, error) {
 	tempInfo.getStorageInfo()
 	//获取系统时区
 	tempInfo.GetTimeZone()
+	//关闭防火墙
+	tempInfo.stopFireWall()
 
 	return tempInfo, nil
 }
@@ -89,5 +91,3 @@ func CheckHostName(input string) bool {
 
 //get 获取磁盘分区
 //df -Th | grep -v devtmpfs | grep -v tmpfs |  grep -v overlay | grep data | awk 'NR>1'      只关注data
-
-

@@ -17,19 +17,25 @@ type HostInfo struct {
 
 type HostName struct {
 	HostNameStr string `json:"hostname,omitempty"`
-	CheckRes    bool   `json:"CheckRes"`
+	CheckRes    bool   `json:"check_res"`
 }
 type Storage struct {
-	RootDirSize string          `json:"rootdirsize,omitempty"`
-	DataDir     DataDir         `json:"datapath"`
-	DiskInfo    []StorageDevice `json:"storageDevice"`
+	RootDirSize string          `json:"root_dir_size,omitempty"`
+	DataDir     DataDir         `json:"data_dir"`
+	DiskInfo    []StorageDevice `json:"storagedevice"`
 }
 
 type DataDir struct {
-	ExistCheck  bool   `json:"existcheck"`
-	DataDirSize string `json:"datdDirSize,omitempty"`
-	Type        string `json:"type,omitempty"`
+	MountExistCheck bool   `json:"mount_exist_check"`
+	DataDirSize     string `json:"data_dir_size,omitempty"`
+	Type            string `json:"type,omitempty"`
 }
 type Others struct {
-	TimeZone string `json:"timezone,omitempty"`
+	TimeZone string   `json:"timezone,omitempty"`
+	Firewall Firewall `json:"firewall"`
+}
+
+type Firewall struct {
+	Stop    bool `json:"stop"`
+	Disable bool `json:"disable"`
 }

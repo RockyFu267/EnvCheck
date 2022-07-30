@@ -118,7 +118,7 @@ func (si *HostInfo) getDataDir() {
 		return
 	}
 	if len(resLsblk) == 0 {
-		si.Storage.DataDir.ExistCheck = false
+		si.Storage.DataDir.MountExistCheck = false
 	}
 	//找出是否存在 /data
 	var resTmp string = ""
@@ -129,10 +129,10 @@ func (si *HostInfo) getDataDir() {
 		}
 	}
 	if resTmp == "" {
-		si.Storage.DataDir.ExistCheck = false
+		si.Storage.DataDir.MountExistCheck = false
 		return
 	} else {
-		si.Storage.DataDir.ExistCheck = true
+		si.Storage.DataDir.MountExistCheck = true
 	}
 	//获取的大小
 	resTmp = DeleteExtraSpace(resTmp)
