@@ -25,6 +25,8 @@ type StorageDevice struct {
 func (si *HostInfo) getStorageInfo() {
 	//获取< / >大小
 	si.getRootDirSize()
+	//获取是否存在 /data
+	si.getDataDir()
 
 	sysBlock := "/sys/block"
 	devices, err := ioutil.ReadDir(sysBlock)
@@ -105,4 +107,61 @@ func (si *HostInfo) getRootDirSize() {
 	resTmp = DeleteExtraSpace(resTmp)
 	res := strings.Fields(resTmp)
 	si.Storage.RootDirSize = res[3]
+}
+
+//getDataDir 获取 /data 是否存在挂载点，并获取响应的信息
+func (si *HostInfo) getDataDir() {
+	//检查是否存在挂载点
+	resLsblk, err := bc.CmdAndChangeDirToResAllInOne("./", "lsblk | grep /data")
+	if err != nil {
+		log.Println("Get DataDirInfo error: ", err)
+		return
+	}
+	if len(resLsblk) == 0 {
+		si.Storage.DataDir.ExistCheck = false
+	}
+	//找出是否存在 /data
+	var resTmp string = ""
+	for _, v := range resLsblk {
+		if v[len(v)-5:] == "/data" {
+			resTmp = v
+			break
+		}
+	}
+	if resTmp == "" {
+		si.Storage.DataDir.ExistCheck = false
+		return
+	} else {
+		si.Storage.DataDir.ExistCheck = true
+	}
+	//获取的大小
+	resTmp = DeleteExtraSpace(resTmp)
+	res := strings.Fields(resTmp)
+	si.Storage.DataDir.DataDirSize = res[3]
+
+	//检查挂载的类型
+	resDfTh, err := bc.CmdAndChangeDirToResAllInOne("./", "df -Th | grep /data")
+	if err != nil {
+		log.Println("Get DataDirtType error: ", err)
+		return
+	}
+	if len(resDfTh) == 0 {
+		si.Storage.DataDir.Type = "unknown"
+	}
+	//找出是否存在 /data
+	var resType string = ""
+	for _, v := range resDfTh {
+		if v[len(v)-5:] == "/data" {
+			resType = v
+			break
+		}
+	}
+	if resType == "" {
+		si.Storage.DataDir.Type = "unknown"
+		return
+	}
+	resType = DeleteExtraSpace(resType)
+	resTypeList := strings.Fields(resType)
+	si.Storage.DataDir.Type = resTypeList[2]
+
 }

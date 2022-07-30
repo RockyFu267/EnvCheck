@@ -21,9 +21,15 @@ type HostName struct {
 }
 type Storage struct {
 	RootDirSize string          `json:"rootdirsize,omitempty"`
+	DataDir     DataDir         `json:"datapath"`
 	DiskInfo    []StorageDevice `json:"storageDevice"`
 }
 
+type DataDir struct {
+	ExistCheck  bool   `json:"existcheck"`
+	DataDirSize string `json:"datdDirSize,omitempty"`
+	Type        string `json:"type,omitempty"`
+}
 type Others struct {
 	TimeZone string `json:"timezone,omitempty"`
 }
