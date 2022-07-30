@@ -27,7 +27,7 @@ func (si *HostInfo) serviceCheck() {
 		si.Others.ServiceCheck.K8sInstalled = resCheckK8s01
 	}
 
-	portMap := make(map[string]struct{})
+	portMap := make(map[string]bool)
 	var portList []string
 	resSSList, err := bc.CmdAndChangeDirToResAllInOne("./", "ss -lntp |awk 'NR>1'  | awk '{print $4}'")
 	if err != nil {
