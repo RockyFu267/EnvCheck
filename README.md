@@ -3,7 +3,7 @@
 
 ## Function list
 + Get HostName
-  + asd
+      + asd
 + Get CPU
 + Get GPU
 + Get OS
