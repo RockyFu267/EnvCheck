@@ -35,6 +35,7 @@ func (si *HostInfo) serviceCheck() {
 		return
 	}
 	for _, v := range resSSList {
+		v = afterColon(v)
 		if _, ok := portMap[v]; ok {
 			continue
 		} else {
