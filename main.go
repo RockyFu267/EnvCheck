@@ -24,9 +24,7 @@ func main() {
 		return
 	}
 	// resJson, _ := json.Marshal(res)
-	// fmt.Println(string(resJson))
 	resJson, _ := json.MarshalIndent(res, "", " ")
 	fmt.Println(string(resJson))
-	// fmt.Println(res)
 
 }
