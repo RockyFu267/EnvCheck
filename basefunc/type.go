@@ -3,6 +3,7 @@ package basefunc
 // Version of the EnvCheck library.
 const Version = "0.0.1"
 
+
 //OSInfo 主机信息
 type HostInfo struct {
 	Meta       Meta            `json:"meta"`

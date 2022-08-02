@@ -2,14 +2,18 @@ package main
 
 import (
 	bf "EnvCheck/basefunc"
+	ec "EnvCheck/controller"
 	"encoding/json"
 	"fmt"
 	"io"
 	"log"
 	"math/rand"
+	"net/http"
 	"os"
 	"strconv"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -70,4 +74,17 @@ func main() {
 		return
 	}
 	fmt.Println("写入成功")
+
+	// 1.创建路由
+	r := gin.Default()
+	// 2.绑定路由规则，执行的函数
+	// gin.Context，封装了request和response
+	r.GET("/health_check/", func(c *gin.Context) {
+		c.String(http.StatusOK, "hello World!")
+	})
+	r.POST("/env_info", ec.EnvInfo)
+	// 3.监听端口，默认在8080
+	// Run("里面不指定端口号默认为8080")
+	//开启监听
+	r.Run(":8282")
 }
