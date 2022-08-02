@@ -34,6 +34,7 @@ func main() {
 	//获取当前时间
 	timeStr := time.Now().Format("2006-01-02_15:04:05")
 	envFileName := "./" + timeStr + ".json"
+
 	//文件是否存在
 	checkDir, err := bf.CheckDir(envFileName)
 	if err != nil {
@@ -44,10 +45,9 @@ func main() {
 	//设置随机数种子
 	rand.Seed(time.Now().UnixNano())
 	tmpStr := strconv.Itoa(rand.Intn(10000))
-
 	var file *os.File
 	if checkDir {
-		//使用追加模式打开文件
+		//创建文件 名字后添加随机数
 		envFileNameTmp := "./" + timeStr + "_" + tmpStr + ".json"
 		file, err = os.Create(envFileNameTmp)
 		if err != nil {
@@ -55,7 +55,7 @@ func main() {
 			return
 		}
 	} else {
-		//不存在创建文件
+		//不存在 创建文件
 		file, err = os.Create(envFileName)
 		if err != nil {
 			fmt.Println("创建失败", err)
@@ -64,10 +64,10 @@ func main() {
 	}
 	defer file.Close()
 	//写入文件
-	echoJson, err := io.WriteString(file, string(resJson))
+	_, err = io.WriteString(file, string(resJson))
 	if err != nil {
 		fmt.Println("写入错误：", err)
 		return
 	}
-	fmt.Println("写入成功", echoJson)
+	fmt.Println("写入成功")
 }
