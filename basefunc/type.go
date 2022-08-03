@@ -3,6 +3,8 @@ package basefunc
 // Version of the EnvCheck library.
 const Version = "0.0.1"
 
+var HostInfoList []HostInfo
+var CheckWarning []string
 
 //OSInfo 主机信息
 type HostInfo struct {

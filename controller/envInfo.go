@@ -1,8 +1,6 @@
 package controller
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/http"
 
 	ebf "EnvCheck/basefunc"
@@ -13,35 +11,37 @@ import (
 func EnvInfo(c *gin.Context) {
 	// 表单发送 name=card, job=phper
 	var postData ebf.HostInfo
-	// err := json.NewDecoder(c.Request.Body).Decode(&postData)
-	// if err != nil {
-	// 	c.JSON(http.StatusOK, gin.H{
-	// 		"message": "fuck",
-	// 	})
-	// 	fmt.Println("error---------------")
-	// 	return
-	// }
 	if err := c.ShouldBindJSON(&postData); err != nil {
 		c.JSON(http.StatusOK, gin.H{
-			"Code":   "400",
-			"Reason": "formError",
+			"code":  "400",
+			"error": "formError",
 		})
 		return
 	}
 	//获取IP
-	iptmp := GetRequestIP(c)
+	postData.Meta.PostIP = GetRequestIP(c)
+	//debug
 	if postData.Meta.Version != ebf.Version || postData.HostName.HostNameStr == "" {
 		c.JSON(http.StatusOK, gin.H{
-			"Code":   "400",
-			"Reason": "infoError",
+			"code":  "400",
+			"error": "infoError",
 		})
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"Code": "200",
+		"code": "200",
 	})
+	if postData.Meta.IP != postData.Meta.PostIP {
+		mesTmp := postData.HostName.HostNameStr + " IP is inconsistent with the requested IP"
+		ebf.CheckWarning = append(ebf.CheckWarning, mesTmp)
+	}
+	//把上报的数据添加至结果列表
+	ebf.HostInfoList = append(ebf.HostInfoList, postData)
+	writeRes()
 
-	resJson, _ := json.MarshalIndent(postData, "", " ")
-	fmt.Println(string(resJson), iptmp)
+	// //debug
+	// resJson, _ := json.MarshalIndent(postData, "", " ")
+	// //debug
+	// fmt.Println(string(resJson))
 
 }
 

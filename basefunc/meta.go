@@ -12,6 +12,7 @@ type Meta struct {
 	Version   string `json:"version"`
 	Timestamp string `json:"timestamp"`
 	IP        string `json:"ip"`
+	PostIP    string `json:"post_ip,omitempty"`
 }
 
 func (si *HostInfo) getMetaInfo() {
