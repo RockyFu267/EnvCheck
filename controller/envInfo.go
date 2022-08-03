@@ -28,6 +28,7 @@ func EnvInfo(c *gin.Context) {
 		})
 		return
 	}
+	//获取IP
 	iptmp := GetRequestIP(c)
 	if postData.Meta.Version != ebf.Version || postData.HostName.HostNameStr == "" {
 		c.JSON(http.StatusOK, gin.H{
