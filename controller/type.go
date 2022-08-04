@@ -7,8 +7,9 @@ type ResData struct {
 }
 
 type EnvConf struct {
-	Role string     `json:"role"`
-	Host []HostPara `json:"host"`
+	Role     string     `json:"role"`
+	MasterIP string     `json:"master_ip"`
+	Host     []HostPara `json:"host"`
 }
 
 type HostPara struct {

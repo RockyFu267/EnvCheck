@@ -1,0 +1,9 @@
+role: master
+master_ip: 127.0.0.1
+host:
+  - ip: 127.0.0.1
+    user: root 
+    password: asdasdad
+  - ip: 192.168.0.6
+    user: root
+    password: asdasdasd
