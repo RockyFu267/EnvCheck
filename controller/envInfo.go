@@ -26,6 +26,7 @@ func EnvInfo(c *gin.Context) {
 			"code":  "400",
 			"error": "infoError",
 		})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"code": "200",
