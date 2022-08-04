@@ -11,7 +11,7 @@ import (
 
 //PostAction 创建post请求
 func PostLocalAction(InputData interface{}, url string) error {
-
+	//转成[]byte
 	bytesData, err := json.Marshal(InputData)
 	if err != nil {
 		log.Println("解析结构体失败", err)
@@ -22,7 +22,7 @@ func PostLocalAction(InputData interface{}, url string) error {
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
-
+	//requeset
 	req, err := http.NewRequest("POST", url, reader)
 	if err != nil {
 		log.Println(err)

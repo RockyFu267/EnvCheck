@@ -33,16 +33,11 @@ func EnvInfo(c *gin.Context) {
 	if postData.Meta.IP != postData.Meta.PostIP {
 		mesTmp := postData.HostName.HostNameStr + " IP is inconsistent with the requested IP"
 		ebf.CheckWarning = append(ebf.CheckWarning, mesTmp)
+		//目前警告还未打印
 	}
 	//把上报的数据添加至结果列表
 	ebf.HostInfoList = append(ebf.HostInfoList, postData)
 	writeRes()
-
-	// //debug
-	// resJson, _ := json.MarshalIndent(postData, "", " ")
-	// //debug
-	// fmt.Println(string(resJson))
-
 }
 
 func GetRequestIP(c *gin.Context) string {

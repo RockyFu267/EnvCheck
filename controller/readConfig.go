@@ -1,16 +1,15 @@
 package controller
 
 import (
-	"fmt"
 	"io/ioutil"
 	"log"
 
 	"gopkg.in/yaml.v2"
 )
 
-func readConfig() {
+func ReadConfig(input string) (res EnvConf) {
 	// 读取文件所有内容装到 []byte 中
-	bytes, err := ioutil.ReadFile("/Users/fuao/Desktop/code/github/EnvCheck/config.yaml")
+	bytes, err := ioutil.ReadFile(input + "/config.yaml")
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -22,8 +21,6 @@ func readConfig() {
 	if err != nil {
 		log.Println(err)
 	}
-	for k, v := range confDemo.Host {
-		fmt.Println(k, v)
-	}
+	return confDemo
 
 }

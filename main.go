@@ -3,7 +3,6 @@ package main
 import (
 	ebf "EnvCheck/basefunc"
 	ec "EnvCheck/controller"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -18,7 +17,7 @@ func main() {
 		//***结束***
 		return
 	}
-	fmt.Println("当前路径：", pwdPath)
+	log.Println("当前路径：", pwdPath)
 	//获取本机信息
 	res, err := ebf.GetHostInfo()
 	if err != nil {
@@ -28,19 +27,27 @@ func main() {
 	}
 	ebf.HostInfoList = append(ebf.HostInfoList, res)
 
-	// err = ec.PostLocalAction(res, "http://127.0.0.1:8282")
-	// if err != nil {
-	// 	mesTmp := res.Meta.IP + ": There is an error uploading data from the main server"
-	// 	ebf.CheckWarning = append(ebf.CheckWarning, mesTmp)
-	// }
+	configTmp := ec.ReadConfig(pwdPath)
+	if configTmp.Role == "master" && configTmp.Mode == "http" {
+		// 1.创建路由
+		r := gin.Default()
+		// 2.绑定路由规则，执行的函数
+		// gin.Context，封装了request和response
+		r.GET("/health_check/", func(c *gin.Context) {
+			c.String(http.StatusOK, "hello World!")
+		})
+		r.POST("/env_info", ec.EnvInfo)
+		r.Run(":8282")
+		return
+	}
+	if configTmp.Role == "client" && configTmp.Mode == "http" {
+		err = ec.PostLocalAction(res, "http://"+configTmp.MasterIP+":"+configTmp.MasterPort)
+		if err != nil {
+			log.Println("Failed to Post data : ", err)
+			// mesTmp := res.Meta.IP + ": There is an error uploading data from the main server"
+			// ebf.CheckWarning = append(ebf.CheckWarning, mesTmp)
+		}
+		return
+	}
 
-	// 1.创建路由
-	r := gin.Default()
-	// 2.绑定路由规则，执行的函数
-	// gin.Context，封装了request和response
-	r.GET("/health_check/", func(c *gin.Context) {
-		c.String(http.StatusOK, "hello World!")
-	})
-	r.POST("/env_info", ec.EnvInfo)
-	r.Run(":8282")
 }
