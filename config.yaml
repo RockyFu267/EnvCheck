@@ -1,11 +1,13 @@
 # role 角色: master 或 client，部署节点为master,其他配置为 client
+#role: master
 role: master
-# master_ip  master角色的IP  需要以实际
-master_ip: 192.168.0.2
-# master_port  master角色的监听端口  如果没有端口冲突，默认不需要改
-master_port: 8282
+# masterip  master角色的IP  需要以实际
+masterip: 192.168.0.2
+# masterport  master角色的监听端口  如果没有端口冲突，默认不需要改
+masterport: 8282
 # mode 模式: http 或 tcp ，如果客户环境可以使用ssh协议，推荐使用http，如果不支持ssh，推荐使用 tcp
 mode: http
+# host 除部署节点以外其他要收集的机器信息
 host:
   - ip: 192.168.0.3
     user: root 

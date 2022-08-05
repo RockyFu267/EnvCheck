@@ -28,6 +28,8 @@ func main() {
 	ebf.HostInfoList = append(ebf.HostInfoList, res)
 
 	configTmp := ec.ReadConfig(pwdPath)
+	posturlTmp := "http://" + configTmp.MasterIP + ":" + configTmp.MasterPort + "/env_info"
+	log.Println(posturlTmp)
 	if configTmp.Role == "master" && configTmp.Mode == "http" {
 		// 1.创建路由
 		r := gin.Default()
@@ -41,7 +43,7 @@ func main() {
 		return
 	}
 	if configTmp.Role == "client" && configTmp.Mode == "http" {
-		err = ec.PostLocalAction(res, "http://"+configTmp.MasterIP+":"+configTmp.MasterPort)
+		err = ec.PostLocalAction(res, posturlTmp)
 		if err != nil {
 			log.Println("Failed to Post data : ", err)
 			// mesTmp := res.Meta.IP + ": There is an error uploading data from the main server"

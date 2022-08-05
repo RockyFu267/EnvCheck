@@ -6,10 +6,11 @@ type ResData struct {
 	Data  interface{}
 }
 
+//EnvConf yaml配置的key不能用 _ 否则会信息丢失
 type EnvConf struct {
 	Role       string     `json:"role"`
-	MasterIP   string     `json:"master_ip"`
-	MasterPort string     `json:"master_port"`
+	MasterIP   string     `json:"masterip"`
+	MasterPort string     `json:"masterport"`
 	Mode       string     `json:"mode"`
 	Host       []HostPara `json:"host"`
 }
