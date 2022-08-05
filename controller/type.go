@@ -16,7 +16,8 @@ type EnvConf struct {
 }
 
 type HostPara struct {
-	IP       string `json:"ip"`
-	User     string `json:"user"`
+	IP string `json:"ip"`
+	// User     string `json:"user"`    //暂时只支持root
 	Password string `json:"password"`
+	Port     string `json:"port,omitempty"`
 }

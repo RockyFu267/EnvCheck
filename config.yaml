@@ -10,8 +10,8 @@ mode: http
 # host 除部署节点以外其他要收集的机器信息
 host:
   - ip: 192.168.0.3
-    user: root 
     password: asdasdad
+    #默认可以不添加
+    sshport: 22
   - ip: 192.168.0.4
-    user: root
     password: asdasdasd
