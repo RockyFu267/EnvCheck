@@ -20,5 +20,5 @@ type HostPara struct {
 	IP       string `json:"ip"`
 	User     string `json:"user"`
 	Password string `json:"password"`
-	Port     string `json:"port,omitempty"`
+	Port     string `json:"sshport,omitempty"`
 }

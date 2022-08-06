@@ -18,6 +18,11 @@ func ReadConfig(input string) EnvConf {
 	if err != nil {
 		log.Println(err)
 	}
+	for k, v := range confDemo.Host {
+		if v.Port == "" {
+			confDemo.Host[k].Port = "22"
+		}
+	}
 	lenTmp := len(confDemo.RemotePath)
 	if string(confDemo.RemotePath[lenTmp-1]) != "/" {
 		confDemo.RemotePath = confDemo.RemotePath + "/"

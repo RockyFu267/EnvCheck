@@ -55,7 +55,7 @@ func main() {
 		r.POST("/env_info", ec.EnvInfo)
 		go r.Run(":8282")
 		for _, v := range configTmp.Host {
-			v.SSHClient(pwdPath, "/tmp/")
+			v.SSHClient(pwdPath, configTmp.RemotePath)
 		}
 		time.Sleep(60 * time.Second)
 		return
