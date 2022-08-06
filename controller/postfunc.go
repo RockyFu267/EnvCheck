@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 )
 
 //PostAction 创建post请求
@@ -30,7 +31,7 @@ func PostLocalAction(InputData interface{}, url string) error {
 	}
 	req.Header.Set("Content-Type", "application/json;charset=UTF-8")
 	req.Header.Add("Connection", "close")
-	client := &http.Client{Transport: tr}
+	client := &http.Client{Transport: tr, Timeout: time.Second * 5}
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Println(err)

@@ -9,13 +9,13 @@ import (
 func (shost *HostPara) SSHClient(pwd string, remotePath string) {
 	newTestCli := essh.NewSSHClient(shost.User, shost.Password, shost.IP, shost.Port)
 	//复制配置文件
-	_, err := newTestCli.UploadFile(pwd+"/config.yaml", remotePath)
+	_, err := newTestCli.UploadFile(pwd+"/config.yaml", remotePath+"config.yaml")
 	if err != nil {
 		log.Println(err)
 		return
 	}
 	//复制工具
-	_, err = newTestCli.UploadFile(pwd+"/envcheck", remotePath)
+	_, err = newTestCli.UploadFile(pwd+"/envcheck", remotePath+"envcheck")
 	if err != nil {
 		log.Println(err)
 		return
@@ -39,7 +39,7 @@ func (shost *HostPara) SSHClient(pwd string, remotePath string) {
 	log.Println(res)
 
 	//启动client
-	cmdTmp = "cd " + remotePath + " && nohup ./envcheck &"
+	cmdTmp = "cd " + remotePath + " && nohup ./envcheck -role client &"
 	_, err = newTestCli.Run(cmdTmp)
 	if err != nil {
 		log.Println(err)

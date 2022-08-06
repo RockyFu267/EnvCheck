@@ -3,6 +3,8 @@ package main
 import (
 	ebf "EnvCheck/basefunc"
 	ec "EnvCheck/controller"
+	"encoding/json"
+	"flag"
 	"log"
 	"net/http"
 	"os"
@@ -11,7 +13,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var starttrole *string = flag.String("role", "master", "Use -role <master or client>")
+
 func main() {
+	//获取参数
+	flag.Parse()
 	pwdPath, err := os.Getwd()
 	if err != nil {
 		log.Println("Get pwdPATH ERROR: ", err)
@@ -26,12 +32,19 @@ func main() {
 		//***结束***
 		return
 	}
+	resJson, _ := json.MarshalIndent(res, "", " ")
+	log.Println(string(resJson))
+
 	ebf.HostInfoList = append(ebf.HostInfoList, res)
 
 	configTmp := ec.ReadConfig(pwdPath)
 	posturlTmp := "http://" + configTmp.MasterIP + ":" + configTmp.MasterPort + "/env_info"
 	log.Println(posturlTmp)
-	if configTmp.Role == "master" && configTmp.Mode == "http" {
+	if *starttrole != "master" && *starttrole != "client" {
+		log.Println("role error")
+		return
+	}
+	if *starttrole == "master" && configTmp.Mode == "http" {
 		// 1.创建路由
 		r := gin.Default()
 		// 2.绑定路由规则，执行的函数
@@ -47,7 +60,7 @@ func main() {
 		time.Sleep(60 * time.Second)
 		return
 	}
-	if configTmp.Role == "client" && configTmp.Mode == "http" {
+	if *starttrole == "client" && configTmp.Mode == "http" {
 		err = ec.PostLocalAction(res, posturlTmp)
 		if err != nil {
 			log.Println("Failed to Post data : ", err)

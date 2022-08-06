@@ -18,6 +18,10 @@ func ReadConfig(input string) EnvConf {
 	if err != nil {
 		log.Println(err)
 	}
+	lenTmp := len(confDemo.RemotePath)
+	if string(confDemo.RemotePath[lenTmp-1]) != "/" {
+		confDemo.RemotePath = confDemo.RemotePath + "/"
+	}
 
 	return confDemo
 
