@@ -55,9 +55,10 @@ func main() {
 		r.POST("/env_info", ec.EnvInfo)
 		go r.Run(":8282")
 		for _, v := range configTmp.Host {
-			go v.SSHClient(pwdPath, configTmp.RemotePath)
+			var tmpHost ec.HostPara = v
+			go tmpHost.SSHClient(pwdPath, configTmp.RemotePath)
 		}
-		time.Sleep(10 * time.Second)
+		time.Sleep(300 * time.Second)
 		return
 	}
 	if *starttrole == "client" && configTmp.Mode == "http" {
