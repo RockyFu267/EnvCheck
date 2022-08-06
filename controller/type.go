@@ -12,12 +12,13 @@ type EnvConf struct {
 	MasterIP   string     `json:"masterip"`
 	MasterPort string     `json:"masterport"`
 	Mode       string     `json:"mode"`
+	RemotePath string     `json:"remotepath"`
 	Host       []HostPara `json:"host"`
 }
 
 type HostPara struct {
-	IP string `json:"ip"`
-	// User     string `json:"user"`    //暂时只支持root
+	IP       string `json:"ip"`
+	User     string `json:"user"`
 	Password string `json:"password"`
 	Port     string `json:"port,omitempty"`
 }
