@@ -7,11 +7,15 @@ masterip: 192.168.0.2
 masterport: 8282
 # mode 模式: http 或 tcp ，如果客户环境可以使用ssh协议，推荐使用http，如果不支持ssh，推荐使用 tcp
 mode: http
+#  remotepath 远程路径 默认路径为tmp
+remotepath: /tmp
 # host 除部署节点以外其他要收集的机器信息
 host:
   - ip: 192.168.0.3
+    user: root
     password: asdasdad
     #默认可以不添加
     sshport: 22
   - ip: 192.168.0.4
+    user: root
     password: asdasdasd

@@ -1,71 +1,48 @@
 package controller
 
 import (
-	bc "EnvCheck/basecmd"
+	essh "EnvCheck/ssh"
 	"log"
 )
 
-//SCPClient 复制client 到client角色列表  这一段是屎山待自己实现ssh、scp后再修改
-func (shost *HostPara) SCPClient() {
-	if shost.Port == "" {
-		shost.Port = "22"
+//SSHClient 复制client 并远程启动
+func (shost *HostPara) SSHClient(pwd string, remotePath string) {
+	newTestCli := essh.NewSSHClient(shost.User, shost.Password, shost.IP, shost.Port)
+	//复制配置文件
+	_, err := newTestCli.UploadFile(pwd+"/config.yaml", remotePath)
+	if err != nil {
+		log.Println(err)
+		return
 	}
-	scpCmdClient := "/root/envcheck/gossh" + " -t push -h " + shost.IP + " -P " + shost.Port + " -u root -p " + shost.Password + " -f /root/envcheck/envcheck /root/ "
-	err := SCPFile(scpCmdClient)
+	//复制工具
+	_, err = newTestCli.UploadFile(pwd+"/envcheck", remotePath)
 	if err != nil {
 		log.Println(err)
 		return
 	}
 
-	scpCmdConfig := "/root/envcheck/gossh" + " -t push -h " + shost.IP + " -P " + shost.Port + " -u root -p " + shost.Password + " -f /root/envcheck/config.yaml /root/ "
-	err = SCPFile(scpCmdConfig)
+	//赋权
+	cmdTmp := "chmod 777 " + remotePath + "config.yaml"
+	res, err := newTestCli.Run(cmdTmp)
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	scpCmdClientSh := "/root/envcheck/gossh" + " -t push -h " + shost.IP + " -P " + shost.Port + " -u root -p " + shost.Password + " -f /root/envcheck/client-start.sh /root/ "
-	err = SCPFile(scpCmdClientSh)
+	log.Println(res)
+	//赋权
+	cmdTmp = "chmod 777 " + remotePath + "envcheck"
+	res, err = newTestCli.Run(cmdTmp)
 	if err != nil {
 		log.Println(err)
 		return
 	}
-}
+	log.Println(res)
 
-//SshStartClient 远程启动client
-func (shost *HostPara) SshStartClient() {
-	if shost.Port == "" {
-		shost.Port = "22"
-	}
-	startCmdClient := "/root/envcheck/gossh" + " -t cmd -h " + shost.IP + " -P " + shost.Port + " -u root -p " + shost.Password + " -f /root/client-start.sh "
-	resStart, err := bc.CmdAndChangeDirToResAllInOne("./", startCmdClient)
+	//启动client
+	cmdTmp = "cd " + remotePath + " && nohup ./envcheck &"
+	_, err = newTestCli.Run(cmdTmp)
 	if err != nil {
-		log.Println("start "+shost.IP+" error: ", err)
+		log.Println(err)
 		return
 	}
-	if len(resStart) < 3 {
-		log.Println("start "+shost.IP+" error:", err)
-		return
-	}
-	if resStart[2] != "return=0" {
-		log.Println("start "+shost.IP+" error:", err)
-		return
-	}
-
-}
-
-func SCPFile(cpCmd string) error {
-	resSCP, err := bc.CmdAndChangeDirToResAllInOne("./", cpCmd)
-	if err != nil {
-		log.Println("cp file error: ", err)
-		return err
-	}
-	if len(resSCP) < 3 {
-		log.Println("cp file error: ", err)
-		return err
-	}
-	if resSCP[2] != "return=0" {
-		log.Println("cp file error: ", err)
-		return err
-	}
-	return nil
 }

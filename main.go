@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -39,7 +40,11 @@ func main() {
 			c.String(http.StatusOK, "hello World!")
 		})
 		r.POST("/env_info", ec.EnvInfo)
-		r.Run(":8282")
+		go r.Run(":8282")
+		for _, v := range configTmp.Host {
+			v.SSHClient(pwdPath, "/tmp/")
+		}
+		time.Sleep(10 * time.Second)
 		return
 	}
 	if configTmp.Role == "client" && configTmp.Mode == "http" {
