@@ -44,7 +44,7 @@ func main() {
 		for _, v := range configTmp.Host {
 			v.SSHClient(pwdPath, "/tmp/")
 		}
-		time.Sleep(10 * time.Second)
+		time.Sleep(60 * time.Second)
 		return
 	}
 	if configTmp.Role == "client" && configTmp.Mode == "http" {
