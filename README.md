@@ -1,4 +1,4 @@
-# EnvCheck
+# EnvCheck 
 + A tool for automatically detecting server environment information
 + It has only been verified on CentOS system for the time being
 
