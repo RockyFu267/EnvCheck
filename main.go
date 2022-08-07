@@ -57,7 +57,7 @@ func main() {
 		time.Sleep(5 * time.Second)
 		for _, v := range configTmp.Host {
 			var tmpHost ec.HostPara = v
-			tmpHost.SSHClient(pwdPath, configTmp.RemotePath)
+			go tmpHost.SSHClient(pwdPath, configTmp.RemotePath)
 		}
 		time.Sleep(300 * time.Second)
 		return
