@@ -20,23 +20,23 @@ func (shost *HostPara) SSHClient(pwd string, remotePath string) {
 		log.Println("copy client error: ", err)
 		return
 	}
+	log.Println(shost.IP + ":复制完成")
 
 	//赋权
 	cmdTmp := "chmod 777 " + remotePath + "config.yaml"
-	res, err := newTestCli.Run(cmdTmp)
+	_, err = newTestCli.Run(cmdTmp)
 	if err != nil {
 		log.Println("chmod config error: ", err)
 		return
 	}
-	log.Println(res)
 	//赋权
 	cmdTmp = "chmod 777 " + remotePath + "envcheck"
-	res, err = newTestCli.Run(cmdTmp)
+	_, err = newTestCli.Run(cmdTmp)
 	if err != nil {
 		log.Println("chmod client error: ", err)
 		return
 	}
-	log.Println(res)
+	log.Println(shost.IP + ":赋权完成")
 
 	//启动client
 	cmdTmp = "cd " + remotePath + " && ./envcheck -role client"
@@ -45,4 +45,5 @@ func (shost *HostPara) SSHClient(pwd string, remotePath string) {
 		log.Println("start client error: ", err)
 		return
 	}
+	log.Println(shost.IP + ":启动完成")
 }
