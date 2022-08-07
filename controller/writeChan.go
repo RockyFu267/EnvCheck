@@ -2,8 +2,6 @@ package controller
 
 import (
 	ebf "EnvCheck/basefunc"
-	"fmt"
-	"log"
 )
 
 func WriteChan() {
@@ -12,9 +10,7 @@ func WriteChan() {
 
 //CheckInfoList 检查是否已全员检查完毕
 func CheckInfoList() bool {
-	fmt.Println("")
-	log.Println("")
-	lenConfigHost := len(ebf.HostInfoList)
+	//比较已执行长度与目标长度
 	lenPostHost := len(ebf.PostInfoList)
-	return lenPostHost >= lenConfigHost
+	return lenPostHost >= ebf.LenHostList
 }

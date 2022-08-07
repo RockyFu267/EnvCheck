@@ -14,7 +14,7 @@ func GetHostInfo() (HostInfo, error) {
 	//获取主机名并赋值
 	tempHostName, tempHostNameCheck, err := GetHostName()
 	if err != nil {
-		log.Println(err)
+		log.Println("get hostname error: ", err)
 		//***结束***
 		//改进  不能结束，继续收集其他信息
 		return tempInfo, err
@@ -60,7 +60,7 @@ func GetHostInfo() (HostInfo, error) {
 func GetHostName() (string, bool, error) {
 	res, err := os.Hostname()
 	if err != nil {
-		log.Println(err)
+		log.Println("get hostname error", err)
 		return "", false, err
 	}
 	//检查主机名规范
@@ -72,7 +72,7 @@ func GetHostName() (string, bool, error) {
 func (si *HostInfo) GetTimeZone() {
 	res, err := bc.CmdAndChangeDirToResAllInOne("./", "date +%Z")
 	if err != nil {
-		log.Println(err)
+		log.Println("get TimeZone", err)
 		return
 	}
 	if len(res) == 0 {

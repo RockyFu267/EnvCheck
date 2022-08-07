@@ -20,7 +20,7 @@ func (si *HostInfo) getMetaInfo() {
 	si.Meta.Timestamp = time.Now().Format("2006-01-02_15:04:05")
 	ipTmp, err := GetOutBoundIP()
 	if err != nil {
-		log.Println(err)
+		log.Println("get outBoundIP error", err)
 		return
 	}
 	si.Meta.IP = ipTmp

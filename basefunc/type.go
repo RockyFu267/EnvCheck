@@ -6,6 +6,7 @@ const Version = "0.0.1"
 var HostInfoList []HostInfo
 var CheckWarning []string
 var PostInfoList []PostInfo
+var LenHostList int
 
 //OSInfo 主机信息
 type HostInfo struct {
