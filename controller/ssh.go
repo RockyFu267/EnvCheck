@@ -39,7 +39,7 @@ func (shost *HostPara) SSHClient(pwd string, remotePath string) {
 	log.Println(res)
 
 	//启动client
-	cmdTmp = "cd " + remotePath + " && nohup ./envcheck -role client &"
+	cmdTmp = "cd " + remotePath + " && ./envcheck -role client"
 	_, err = newTestCli.Run(cmdTmp)
 	if err != nil {
 		log.Println(err)

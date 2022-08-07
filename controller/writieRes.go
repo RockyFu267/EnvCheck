@@ -45,7 +45,13 @@ func writeRes() {
 		}
 	}
 	defer file.Close()
-	resJson, _ := json.MarshalIndent(ebf.HostInfoList, "", " ")
+	resJson, err := json.MarshalIndent(ebf.HostInfoList, "", " ")
+	if err != nil {
+		if err != nil {
+			log.Println("解析数组错误", err)
+			return
+		}
+	}
 	//写入文件
 	_, err = io.WriteString(file, string(resJson))
 	if err != nil {
