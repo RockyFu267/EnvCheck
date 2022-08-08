@@ -38,7 +38,13 @@ func EnvInfo(c *gin.Context) {
 	}
 	//把上报的数据添加至结果列表
 	ebf.HostInfoList = append(ebf.HostInfoList, postData)
-	writeRes()
+
+	// WriteRes()
+	//把成功上传的记录的加入 postlist
+	var tmpPostInfo ebf.PostInfo
+	tmpPostInfo.PostIP = postData.Meta.IP
+	tmpPostInfo.Res = false
+	ebf.PostInfoList = append(ebf.PostInfoList, tmpPostInfo)
 }
 
 func GetRequestIP(c *gin.Context) string {

@@ -44,6 +44,7 @@ func main() {
 		log.Println("role error")
 		return
 	}
+	chScanTurnBool := make(chan bool)
 	if *starttrole == "master" && configTmp.Mode == "http" {
 		// 1.创建路由
 		r := gin.Default()
@@ -59,8 +60,26 @@ func main() {
 			var tmpHost ec.HostPara = v
 			go tmpHost.SSHClient(pwdPath, configTmp.RemotePath)
 		}
-		time.Sleep(300 * time.Second)
-		return
+		go func() {
+			for {
+				time.Sleep(10 * time.Second)
+				checkListRes := ec.CheckInfoList()
+				if checkListRes {
+					chScanTurnBool <- true
+				}
+			}
+		}()
+		//等待结束信号
+		for {
+			select {
+			case <-chScanTurnBool:
+				ec.WriteRes()
+				return
+			case <-time.After(time.Duration(600 * time.Second)):
+				log.Println("TimeOut")
+				return
+			}
+		}
 	}
 	if *starttrole == "client" && configTmp.Mode == "http" {
 		err = ec.PostLocalAction(res, posturlTmp)

@@ -5,6 +5,8 @@ const Version = "0.0.1"
 
 var HostInfoList []HostInfo
 var CheckWarning []string
+var PostInfoList []PostInfo
+var LenHostList int
 
 //OSInfo 主机信息
 type HostInfo struct {
@@ -45,4 +47,9 @@ type Others struct {
 type Firewall struct {
 	Stop    bool `json:"stop"`
 	Disable bool `json:"disable"`
+}
+
+type PostInfo struct {
+	PostIP string `json:"post_ip"`
+	Res    bool   `json:"res"`
 }

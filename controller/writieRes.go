@@ -11,8 +11,8 @@ import (
 	"time"
 )
 
-//writeRes 写入结果
-func writeRes() {
+//WriteRes 写入结果
+func WriteRes() {
 	//获取当前时间
 	timeStr := time.Now().Format("2006-01-02_15-04-05")
 	envFileName := "./" + timeStr + ".json"
