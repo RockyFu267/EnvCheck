@@ -69,7 +69,7 @@ func main() {
 				}
 			}
 		}()
-		// time.Sleep(300 * time.Second)
+		//等待结束信号
 		for {
 			select {
 			case <-chScanTurnBool:
