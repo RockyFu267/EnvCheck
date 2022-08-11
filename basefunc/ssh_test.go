@@ -1,4 +1,4 @@
-package ssh
+package basefunc
 
 import (
 	"log"
@@ -6,7 +6,7 @@ import (
 )
 
 func Test_SSH(t *testing.T) {
-	newTestCli := NewSSHClient("root", "StTLzvjcu8S35ki", "59.110.162.166", "22")
+	newTestCli := NewSSHClient("root", "xxxxxxx", "11.110.162.166", "22")
 	res, err := newTestCli.Run("date")
 	if err != nil {
 		log.Println(err)
