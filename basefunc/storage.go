@@ -162,6 +162,6 @@ func (si *HostInfo) getDataDir() {
 	}
 	resType = DeleteExtraSpace(resType)
 	resTypeList := strings.Fields(resType)
-	si.Storage.DataDir.Type = resTypeList[2]
+	si.Storage.DataDir.Type = resTypeList[1]
 
 }
