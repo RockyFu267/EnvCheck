@@ -37,6 +37,7 @@ func (shost *HostPara) SSHClient(pwd string, remotePath string, mastetIp string,
 		ebf.PostInfoList = append(ebf.PostInfoList, tmpPostInfo)
 		return
 	}
+	log.Println(shost.IP + ":网络测试通过")
 	//复制配置文件
 	_, err = newTestCli.UploadFile(pwd+"/config.yaml", remotePath+"config.yaml")
 	if err != nil {
