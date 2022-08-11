@@ -58,7 +58,7 @@ func main() {
 		// 2.绑定路由规则，执行的函数
 		// gin.Context，封装了request和response
 		r.GET("/health_check/", func(c *gin.Context) {
-			c.String(http.StatusOK, "hello World!")
+			c.String(http.StatusOK, "HelloWorld")
 		})
 		r.POST("/env_info", ec.EnvInfo)
 		go r.Run(":8282")
@@ -85,7 +85,7 @@ func main() {
 			case <-chScanTurnBool:
 				resJsonList, _ := json.MarshalIndent(ebf.HostInfoList, "", " ")
 				//打印总的结果
-				log.Println(resJsonList)
+				log.Println(string(resJsonList))
 				ec.WriteRes()
 				return
 			case <-time.After(time.Duration(600 * time.Second)):

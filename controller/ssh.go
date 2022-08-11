@@ -11,16 +11,37 @@ func (shost *HostPara) SSHClient(pwd string, remotePath string, mastetIp string,
 	tmpPostInfo.PostIP = shost.IP
 	newTestCli := ebf.NewSSHClient(shost.User, shost.Password, shost.IP, shost.Port)
 	//测试与master端口联通性
-	cmdTmp := "curl http://" + mastetIp + ":" + masterPort + "/health_check/"
+	cmdTmp := "curl http://" + mastetIp + ":" + masterPort + "/health_check/ > " + remotePath + "curl_res.txt"
+	_, err := newTestCli.Run(cmdTmp)
+	if err != nil {
+		log.Println("curl master port error: ", err)
+		tmpPostInfo.Res = false
+		ebf.PostInfoList = append(ebf.PostInfoList, tmpPostInfo)
+		return
+	}
+	cmdTmp = "cat " + remotePath + "curl_res.txt"
 	curlResTmp, err := newTestCli.Run(cmdTmp)
 	if err != nil {
-		log.Println("copy config error: ", err)
+		log.Println("get curl res error01: ", err)
 		tmpPostInfo.Res = false
 		ebf.PostInfoList = append(ebf.PostInfoList, tmpPostInfo)
 		return
 	}
 	//debug
+	log.Println(len(curlResTmp))
+	log.Println(curlResTmp)
+	RES := ebf.DeleteExtraSpace(curlResTmp)
+	log.Println(len(RES))
+	log.Println(RES)
+	//debug
 	log.Println(curlResTmp, "11111111111111")
+
+	if RES != "HelloWorld" {
+		log.Println("get curl res error02: ", err)
+		tmpPostInfo.Res = false
+		ebf.PostInfoList = append(ebf.PostInfoList, tmpPostInfo)
+		return
+	}
 	//复制配置文件
 	_, err = newTestCli.UploadFile(pwd+"/config.yaml", remotePath+"config.yaml")
 	if err != nil {
