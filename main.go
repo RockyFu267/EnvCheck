@@ -13,11 +13,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var starttrole *string = flag.String("role", "master", "Use -role <master or client>")
+var starttrole *string = flag.String("role", "", "Use -role <master or client>")
 
 func main() {
 	//获取参数
 	flag.Parse()
+	//检查参数合法性
+	if *starttrole != "master" && *starttrole != "client" && *starttrole != "" {
+		log.Println("role error")
+		return
+	}
 	pwdPath, err := os.Getwd()
 	if err != nil {
 		log.Println("Get pwdPATH ERROR: ", err)
@@ -39,12 +44,14 @@ func main() {
 
 	configTmp := ec.ReadConfig(pwdPath)
 	posturlTmp := "http://" + configTmp.MasterIP + ":" + configTmp.MasterPort + "/env_info"
-	log.Println(posturlTmp)
-	if *starttrole != "master" && *starttrole != "client" {
-		log.Println("role error")
+	chScanTurnBool := make(chan bool)
+	//判断启动参数 是主服务还是客户端 是否是单机模式
+	//如果是单机模式
+	if *starttrole == "" && configTmp.Mode == "http" {
+		ec.WriteRes()
 		return
 	}
-	chScanTurnBool := make(chan bool)
+	//如果是主服务
 	if *starttrole == "master" && configTmp.Mode == "http" {
 		// 1.创建路由
 		r := gin.Default()
@@ -56,6 +63,7 @@ func main() {
 		r.POST("/env_info", ec.EnvInfo)
 		go r.Run(":8282")
 		time.Sleep(5 * time.Second)
+		//并发远程操作命令
 		for _, v := range configTmp.Host {
 			var tmpHost ec.HostPara = v
 			go tmpHost.SSHClient(pwdPath, configTmp.RemotePath)
@@ -64,6 +72,7 @@ func main() {
 			for {
 				time.Sleep(10 * time.Second)
 				checkListRes := ec.CheckInfoList()
+				//检查客户端执行结果,如果完成(包括失败的)
 				if checkListRes {
 					chScanTurnBool <- true
 				}
@@ -72,7 +81,11 @@ func main() {
 		//等待结束信号
 		for {
 			select {
+			//收到完成信号
 			case <-chScanTurnBool:
+				resJsonList, _ := json.MarshalIndent(ebf.HostInfoList, "", " ")
+				//打印总的结果
+				log.Println(resJsonList)
 				ec.WriteRes()
 				return
 			case <-time.After(time.Duration(600 * time.Second)):
@@ -81,12 +94,11 @@ func main() {
 			}
 		}
 	}
+	//如果是客户端
 	if *starttrole == "client" && configTmp.Mode == "http" {
 		err = ec.PostLocalAction(res, posturlTmp)
 		if err != nil {
 			log.Println("Failed to Post data : ", err)
-			// mesTmp := res.Meta.IP + ": There is an error uploading data from the main server"
-			// ebf.CheckWarning = append(ebf.CheckWarning, mesTmp)
 		}
 		return
 	}
