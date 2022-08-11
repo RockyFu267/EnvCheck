@@ -66,7 +66,7 @@ func main() {
 		//并发远程操作命令
 		for _, v := range configTmp.Host {
 			var tmpHost ec.HostPara = v
-			go tmpHost.SSHClient(pwdPath, configTmp.RemotePath)
+			go tmpHost.SSHClient(pwdPath, configTmp.RemotePath, configTmp.MasterIP, configTmp.MasterPort)
 		}
 		go func() {
 			for {
