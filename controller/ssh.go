@@ -2,7 +2,6 @@ package controller
 
 import (
 	ebf "EnvCheck/basefunc"
-	essh "EnvCheck/ssh"
 	"log"
 )
 
@@ -10,7 +9,7 @@ import (
 func (shost *HostPara) SSHClient(pwd string, remotePath string) {
 	var tmpPostInfo ebf.PostInfo
 	tmpPostInfo.PostIP = shost.IP
-	newTestCli := essh.NewSSHClient(shost.User, shost.Password, shost.IP, shost.Port)
+	newTestCli := ebf.NewSSHClient(shost.User, shost.Password, shost.IP, shost.Port)
 	//复制配置文件
 	_, err := newTestCli.UploadFile(pwd+"/config.yaml", remotePath+"config.yaml")
 	if err != nil {
