@@ -10,7 +10,8 @@ func (shost *HostPara) SSHClient(pwd string, remotePath string, mastetIp string,
 	var tmpPostInfo ebf.PostInfo
 	tmpPostInfo.PostIP = shost.IP
 	newTestCli := ebf.NewSSHClient(shost.User, shost.Password, shost.IP, shost.Port)
-	//测试与master端口联通性
+	//测试与master端口联通性 先curl 请求 写入页面信息 再校验是否与预期相符
+	//远程执行目前还未找到合适的直接返回网络联通性结果的命令，等找到再优化替换
 	cmdTmp := "curl http://" + mastetIp + ":" + masterPort + "/health_check/ > " + remotePath + "curl_res.txt"
 	_, err := newTestCli.Run(cmdTmp)
 	if err != nil {
@@ -27,15 +28,9 @@ func (shost *HostPara) SSHClient(pwd string, remotePath string, mastetIp string,
 		ebf.PostInfoList = append(ebf.PostInfoList, tmpPostInfo)
 		return
 	}
-	//debug
-	log.Println(len(curlResTmp))
-	log.Println(curlResTmp)
+	//去掉换行符
 	RES := ebf.DeleteExtraSpace(curlResTmp)
-	log.Println(len(RES))
-	log.Println(RES)
-	//debug
-	log.Println(curlResTmp, "11111111111111")
-
+	//检查获取内容是否与健康检查页内容一致
 	if RES != "HelloWorld" {
 		log.Println("get curl res error02: ", err)
 		tmpPostInfo.Res = false
