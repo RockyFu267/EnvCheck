@@ -59,7 +59,7 @@ func main() {
 			c.String(http.StatusOK, "HelloWorld")
 		})
 		r.POST("/env_info", ec.EnvInfo)
-		go r.Run(":8282")
+		go r.Run(":" + configTmp.MasterPort)
 		time.Sleep(5 * time.Second)
 		//并发远程操作命令
 		for _, v := range configTmp.Host {
