@@ -26,7 +26,6 @@ func main() {
 	pwdPath, err := os.Getwd()
 	if err != nil {
 		log.Println("Get pwdPATH ERROR: ", err)
-		//***结束***
 		return
 	}
 	log.Println("当前路径：", pwdPath)
@@ -34,7 +33,6 @@ func main() {
 	res, err := ebf.GetHostInfo()
 	if err != nil {
 		log.Println("Get OsInfo ERROR: ", err)
-		//***结束***
 		return
 	}
 	resJson, _ := json.MarshalIndent(res, "", " ")

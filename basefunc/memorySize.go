@@ -46,10 +46,6 @@ loop:
 		recLen := dmi[p+1]
 
 		switch recType {
-		// case 4:
-		// 	if si.CPU.Speed == 0 {
-		// 		si.CPU.Speed = uint(word(dmi, p+0x16))
-		// 	}
 		case 17:
 			size := uint(word(dmi, p+0x0c))
 			if size == 0 || size == 0xffff || size&0x8000 == 0x8000 {
@@ -78,12 +74,6 @@ loop:
 					si.Memory.Type = memTypes[index-1]
 				}
 			}
-
-			// if si.Memory.Speed == 0 && recLen >= 0x17 {
-			// 	if speed := uint(word(dmi, p+0x15)); speed != 0 {
-			// 		si.Memory.Speed = speed
-			// 	}
-			// }
 		case 19:
 			start := uint(dword(dmi, p+0x04))
 			end := uint(dword(dmi, p+0x08))

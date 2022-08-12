@@ -9,7 +9,6 @@ import (
 )
 
 func EnvInfo(c *gin.Context) {
-	// 表单发送 name=card, job=phper
 	var postData ebf.HostInfo
 	if err := c.ShouldBindJSON(&postData); err != nil {
 		c.JSON(http.StatusOK, gin.H{
@@ -20,7 +19,6 @@ func EnvInfo(c *gin.Context) {
 	}
 	//获取IP
 	postData.Meta.PostIP = GetRequestIP(c)
-	//debug
 	if postData.Meta.Version != ebf.Version || postData.HostName.HostNameStr == "" {
 		c.JSON(http.StatusOK, gin.H{
 			"code":  "400",
@@ -39,7 +37,6 @@ func EnvInfo(c *gin.Context) {
 	//把上报的数据添加至结果列表
 	ebf.HostInfoList = append(ebf.HostInfoList, postData)
 
-	// WriteRes()
 	//把成功上传的记录的加入 postlist
 	var tmpPostInfo ebf.PostInfo
 	tmpPostInfo.PostIP = postData.Meta.IP
