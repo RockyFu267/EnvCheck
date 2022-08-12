@@ -85,13 +85,10 @@ func (si *HostInfo) GetTimeZone() {
 //CheckHostName 检查主机名是否只包含a-z,0-9,-,.
 func CheckHostName(input string) bool {
 	f := func(r rune) bool {
-		// return (r < 'A' && r > '9') || r > 'z' || (r > 'Z' && r < 'a') || r < '0'
+
 		return r < '-' || (r > '.' && r < '0') || (r > '9' && r < 'a') || r > 'z'
 
 	}
 	return strings.IndexFunc(input, f) == -1
 
 }
-
-//get 获取磁盘分区
-//df -Th | grep -v devtmpfs | grep -v tmpfs |  grep -v overlay | grep data | awk 'NR>1'      只关注data
