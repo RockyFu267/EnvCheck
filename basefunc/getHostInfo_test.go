@@ -7,13 +7,11 @@ import (
 )
 
 func Test_GetHostInfo(t *testing.T) {
-
 	res, err := GetHostInfo()
 	if err != nil {
 		log.Println(err)
 		return
 	}
-
 	fmt.Println(res.HostName)
 
 }
@@ -33,15 +31,12 @@ func Test_getGPUInfo(t *testing.T) {
 func Test_DeleteExtraSpace(t *testing.T) {
 	tmpstr := "     asdasd 		[      ]			asdasd  ]]]]  asdasd   asdas  "
 	str := DeleteExtraSpace(tmpstr)
-
 	fmt.Println(str)
-
 }
 
 func Test_afterColon(t *testing.T) {
 	tmpstr := "172.0.0.1:443:"
 	str := afterColon(tmpstr)
-
 	fmt.Println(str)
 
 }
