@@ -158,7 +158,7 @@ func WriteResImage() {
 		for _, k := range v.Storage.DiskInfo {
 			if _, ok := diskTypeMap[k.Type]; ok {
 			} else {
-				GPUModeMap[k.Type] = true
+				diskTypeMap[k.Type] = true
 			}
 		}
 		//内存大小
