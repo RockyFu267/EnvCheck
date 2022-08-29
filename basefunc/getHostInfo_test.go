@@ -17,7 +17,7 @@ func Test_GetHostInfo(t *testing.T) {
 }
 
 func Test_CheckHostName(t *testing.T) {
-	str := "aa{a-a.a"
+	str := "gzbh-intelmbx005.gzbh.baidu.com"
 	res := CheckHostName(str)
 	fmt.Println(res)
 }
@@ -41,9 +41,9 @@ func Test_afterColon(t *testing.T) {
 
 }
 
-func Test_beforeDash(t *testing.T) {
+func Test_BeforeDash(t *testing.T) {
 	tmpstr := "4.17.11-1.el7.elrepo.x86_64"
-	str := beforeDash(tmpstr)
+	str := BeforeDash(tmpstr)
 	fmt.Println(str)
 
 }
