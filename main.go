@@ -47,6 +47,7 @@ func main() {
 	//如果是单机模式
 	if *starttrole == "" && configTmp.Mode == "http" {
 		ec.WriteRes()
+		ec.WriteResImage()
 		return
 	}
 	//如果是主服务
@@ -85,6 +86,7 @@ func main() {
 				//打印总的结果
 				log.Println(string(resJsonList))
 				ec.WriteRes()
+				ec.WriteResImage()
 				return
 			case <-time.After(time.Duration(600 * time.Second)):
 				log.Println("TimeOut")
