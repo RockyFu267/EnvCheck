@@ -167,7 +167,7 @@ func WriteResImage() {
 		for _, k := range v.Network {
 			if _, ok := netCardSpeedMap[k.Speed]; ok {
 			} else {
-				GPUModeMap[k.Speed] = true
+				netCardSpeedMap[k.Speed] = true
 			}
 		}
 		if len(v.Network) >= 2 {
