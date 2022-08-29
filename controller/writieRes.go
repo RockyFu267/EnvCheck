@@ -143,7 +143,7 @@ func WriteResImage() {
 		} else {
 			cpuarchMap[v.CPU.CPUARCH] = true
 		}
-		cpuCount = cpuCount + v.GPU.Count
+		cpuCount = cpuCount + int(v.CPU.Threads)
 		//CPU指令集
 		if v.CPU.Avx {
 			instructionMap["avx"] = true
