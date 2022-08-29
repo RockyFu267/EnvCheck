@@ -40,3 +40,10 @@ func Test_afterColon(t *testing.T) {
 	fmt.Println(str)
 
 }
+
+func Test_beforeDash(t *testing.T) {
+	tmpstr := "4.17.11-1.el7.elrepo.x86_64"
+	str := beforeDash(tmpstr)
+	fmt.Println(str)
+
+}
