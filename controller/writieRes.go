@@ -242,20 +242,24 @@ func WriteResImage() {
 		netCardSpeedStr = netCardSpeedStr + " " + k
 	}
 	strRes = strRes + "网卡速率种类列表: " + netCardSpeedStr + "\n"
-	for k := range netCardSMap {
-		netCardsStr = netCardsStr + " " + k
+	if len(netCardSMap) <= 1 {
+	} else {
+		for k := range netCardSMap {
+			netCardsStr = netCardsStr + " " + k
+		}
+		strRes = strRes + "有多张网卡的机器列表: " + netCardsStr + "\n"
 	}
-	strRes = strRes + "有多张网卡的机器列表: " + netCardsStr + "\n"
 	//主机名小写的机器列表
 	var illegalHostStr string
-	for k := range illegalHostMap {
-		illegalHostStr = illegalHostStr + " " + k
+	if len(illegalHostMap) <= 0 {
+	} else {
+		for k := range illegalHostMap {
+			illegalHostStr = illegalHostStr + " " + k
+		}
+		strRes = strRes + "需要修改的主机名的机器列表: " + illegalHostStr + "\n"
 	}
-	strRes = strRes + "需要修改的主机名的机器列表: " + illegalHostStr + "\n"
 
-	//debug-B
-	log.Println(strRes)
-	//debug-E
+	log.Println("\n", strRes)
 
 	//写入文件
 	_, err = io.WriteString(file, strRes)
