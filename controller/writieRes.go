@@ -3,6 +3,7 @@ package controller
 import (
 	ebf "EnvCheck/basefunc"
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"math/rand"
@@ -99,7 +100,7 @@ func WriteResImage() {
 	var strRes string
 	//循环获取结果
 	//存放机器类型
-	hypervisorMap := make(map[string]bool)
+	hypervisorMap := make(map[string]int)
 	kernelMap := make(map[string]bool)
 	osMap := make(map[string]bool)
 	GPUModeMap := make(map[string]bool)
@@ -114,10 +115,16 @@ func WriteResImage() {
 	illegalHostMap := make(map[string]bool)
 	for _, v := range ebf.HostInfoList {
 		//是否虚拟机
-		if _, ok := hypervisorMap[v.Hypervisor]; ok {
+		// if _, ok := hypervisorMap[v.Hypervisor]; ok {
+		// } else {
+		// 	hypervisorMap[v.Hypervisor] = hypervisorMap[v.Hypervisor] + 1
+		// }
+		if v.Hypervisor == "Physical" {
+			hypervisorMap["Physical"] = hypervisorMap["Physical"] + 1
 		} else {
-			hypervisorMap[v.Hypervisor] = true
+			hypervisorMap["Virtual"] = hypervisorMap["Virtual"] + 1
 		}
+
 		//获取操作系统版本
 		osInfo := v.OS.Vendor + "-" + v.OS.Release
 		if _, ok := osMap[osInfo]; ok {
@@ -182,9 +189,15 @@ func WriteResImage() {
 	//拼接字符串类型的结果输出
 	//机器类型
 	if len(hypervisorMap) >= 2 {
-		strRes = "是否是虚拟机: 有物理机也有虚拟机" + "\n"
+		strPhysicalCount := strconv.Itoa(hypervisorMap["Physical"])
+		strVirtualCount := strconv.Itoa(hypervisorMap["Virtual"])
+		strRes = "机器类型统计: 有物理机" + strPhysicalCount + "台, 有虚拟机 " + strVirtualCount + " 台" + "\n"
 	} else {
-		strRes = "是否是虚拟机: 物理机" + "\n"
+		if len(hypervisorMap) == 1 && hypervisorMap["Physical"] == 1 {
+			strRes = "机器类型统计: 全部是物理机" + "\n"
+		} else {
+			strRes = "机器类型统计: 全部是虚拟机" + "\n"
+		}
 	}
 	//操作系统版本列表
 	var osStr string
@@ -259,7 +272,7 @@ func WriteResImage() {
 		strRes = strRes + "需要修改的主机名的机器列表: " + illegalHostStr + "\n"
 	}
 
-	log.Println("\n", strRes)
+	fmt.Println(strRes)
 
 	//写入文件
 	_, err = io.WriteString(file, strRes)
