@@ -146,13 +146,13 @@ func WriteResImage() {
 		cpuCount = cpuCount + v.GPU.Count
 		//CPU指令集
 		if v.CPU.Avx {
-			cpuarchMap["avx"] = true
+			instructionMap["avx"] = true
 		}
 		if v.CPU.Avx2 {
-			cpuarchMap["avx2"] = true
+			instructionMap["avx2"] = true
 		}
 		if v.CPU.Bmi2 {
-			cpuarchMap["bmi2"] = true
+			instructionMap["bmi2"] = true
 		}
 		//磁盘信息
 		for _, k := range v.Storage.DiskInfo {
