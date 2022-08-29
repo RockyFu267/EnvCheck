@@ -188,15 +188,15 @@ func WriteResImage() {
 	}
 	//拼接字符串类型的结果输出
 	//机器类型
+	strPhysicalCount := strconv.Itoa(hypervisorMap["Physical"])
+	strVirtualCount := strconv.Itoa(hypervisorMap["Virtual"])
 	if len(hypervisorMap) >= 2 {
-		strPhysicalCount := strconv.Itoa(hypervisorMap["Physical"])
-		strVirtualCount := strconv.Itoa(hypervisorMap["Virtual"])
 		strRes = "机器类型统计: 有物理机" + strPhysicalCount + "台, 有虚拟机 " + strVirtualCount + " 台" + "\n"
 	} else {
 		if len(hypervisorMap) == 1 && hypervisorMap["Physical"] == 1 {
-			strRes = "机器类型统计: 全部是物理机" + "\n"
+			strRes = "机器类型统计: 全部是物理机,一共 " + strPhysicalCount + " 台\n"
 		} else {
-			strRes = "机器类型统计: 全部是虚拟机" + "\n"
+			strRes = "机器类型统计: 全部是虚拟机,一共 " + strVirtualCount + " 台\n"
 		}
 	}
 	//操作系统版本列表
