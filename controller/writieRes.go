@@ -193,7 +193,8 @@ func WriteResImage() {
 	if len(hypervisorMap) >= 2 {
 		strRes = "机器类型统计: 有物理机" + strPhysicalCount + "台, 有虚拟机 " + strVirtualCount + " 台" + "\n"
 	} else {
-		if len(hypervisorMap) == 1 && hypervisorMap["Physical"] == 1 {
+		_, ok := hypervisorMap["Physical"]
+		if len(hypervisorMap) == 1 && ok {
 			strRes = "机器类型统计: 全部是物理机,一共 " + strPhysicalCount + " 台\n"
 		} else {
 			strRes = "机器类型统计: 全部是虚拟机,一共 " + strVirtualCount + " 台\n"
