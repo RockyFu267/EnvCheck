@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"encoding/json"
 	"io/ioutil"
 	"log"
 
@@ -43,7 +44,7 @@ func ReadResJson(input string) ([]ebf.HostInfo, error) {
 		log.Println("open ResJson file error:", err)
 		return res, err
 	}
-	err = yaml.Unmarshal(jsonFile, &res)
+	err = json.Unmarshal(jsonFile, &res)
 	if err != nil {
 		log.Println("Unmarshal ResJson Error", err)
 		return res, err
