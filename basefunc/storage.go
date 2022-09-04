@@ -31,6 +31,8 @@ func (si *HostInfo) getStorageInfo() {
 	si.getDfInfo()
 	//获取lsblk
 	si.getLsblkInfo()
+	//获取raid
+	si.getRaidInfo()
 
 	sysBlock := "/sys/block"
 	devices, err := ioutil.ReadDir(sysBlock)
@@ -190,5 +192,21 @@ func (si *HostInfo) getDfInfo() {
 		return
 	}
 	si.Storage.DfInfo = resDfTh
+
+}
+
+//getRaidInfo 获取 raid信息
+func (si *HostInfo) getRaidInfo() {
+	//检查是否存在挂载点
+	resRaidInfo, err := bc.CmdAndChangeDirToResAllInOne("./", `cat /proc/scsi/scsi`)
+	if err != nil {
+		log.Println("Get df error: ", err)
+		return
+	}
+	if len(resRaidInfo) >= 2 {
+		si.Storage.RaidInfo = true
+	} else {
+		si.Storage.RaidInfo = false
+	}
 
 }

@@ -6,14 +6,17 @@ import (
 	"encoding/json"
 	"flag"
 	"log"
+	"mime"
 	"net/http"
 	"os"
 	"time"
 
+	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 )
 
 var starttrole *string = flag.String("role", "", "Use -role <master or client>")
+var starttshow *string = flag.String("show", "", "Use -show Browse web pages")
 
 func main() {
 	//获取参数
@@ -42,6 +45,29 @@ func main() {
 
 	configTmp := ec.ReadConfig(pwdPath)
 	posturlTmp := "http://" + configTmp.MasterIP + ":" + configTmp.MasterPort + "/env_info"
+	//web浏览模式
+	if len(*starttshow) > 0 {
+		jsonTmp, err := ec.ReadResJson(*starttshow)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		// 1.创建路由
+		r := gin.Default()
+		// 2.绑定路由规则，执行的函数
+		// gin.Context，封装了request和response
+		r.GET("/health_check/", func(c *gin.Context) {
+			c.String(http.StatusOK, "HelloWorld")
+		})
+		r.GET("/getinfo", func(c *gin.Context) {
+			c.JSON(http.StatusOK, jsonTmp)
+		})
+		_ = mime.AddExtensionType(".js", "application/javascript")
+		r.Use(static.Serve("/", static.LocalFile("./dist", true)))
+
+		r.Run(":" + configTmp.MasterPort)
+		return
+	}
 	chScanTurnBool := make(chan bool)
 	//判断启动参数 是主服务还是客户端 是否是单机模式
 	//如果是单机模式

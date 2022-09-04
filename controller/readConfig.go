@@ -34,3 +34,19 @@ func ReadConfig(input string) EnvConf {
 	return confDemo
 
 }
+
+//ReadResJson 读取json结果
+func ReadResJson(input string) ([]ebf.HostInfo, error) {
+	var res []ebf.HostInfo
+	jsonFile, err := ioutil.ReadFile(input)
+	if err != nil {
+		log.Println("open ResJson file error:", err)
+		return res, err
+	}
+	err = yaml.Unmarshal(jsonFile, &res)
+	if err != nil {
+		log.Println("Unmarshal ResJson Error", err)
+		return res, err
+	}
+	return res, nil
+}
