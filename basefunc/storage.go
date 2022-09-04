@@ -165,3 +165,36 @@ func (si *HostInfo) getDataDir() {
 	si.Storage.DataDir.Type = resTypeList[1]
 
 }
+
+//getLsblkInfo 获取 lsblkInfo
+func (si *HostInfo) getLsblkInfo() {
+	//检查是否存在挂载点
+	resLsblk, err := bc.CmdAndChangeDirToResAllInOne("./", "lsblk")
+	if err != nil {
+		log.Println("Get lsblk error: ", err)
+		return
+	}
+	//详情输出到lsblkInfo
+	var lsblkInfo string
+	for _, v := range resLsblk {
+		lsblkInfo = lsblkInfo + v + "\n"
+	}
+	si.Storage.LsblkInfo = lsblkInfo
+}
+
+//getDfInfo 获取 df -Th信息
+func (si *HostInfo) getDfInfo() {
+	//检查是否存在挂载点
+	resDfTh, err := bc.CmdAndChangeDirToResAllInOne("./", `df -Th | grep -v "tmpfs"|  grep -v "overlay"`)
+	if err != nil {
+		log.Println("Get df error: ", err)
+		return
+	}
+	//详情输出到dfInfo
+	var dfInfo string
+	for _, v := range resDfTh {
+		dfInfo = dfInfo + v + "\n"
+	}
+	si.Storage.DfInfo = dfInfo
+
+}
