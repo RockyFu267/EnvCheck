@@ -6,11 +6,6 @@ import (
 	"io"
 )
 
-//encryptionString 压缩字符串
-func encryptionString(input []HostInfo) (res string) {
-	return res
-}
-
 //进行zlib压缩
 func DoZlibCompress(src []byte) []byte {
 	var in bytes.Buffer
