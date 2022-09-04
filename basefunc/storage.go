@@ -27,6 +27,10 @@ func (si *HostInfo) getStorageInfo() {
 	si.getRootDirSize()
 	//获取是否存在 /data
 	si.getDataDir()
+	//获取df
+	si.getDfInfo()
+	//获取lsblk
+	si.getLsblkInfo()
 
 	sysBlock := "/sys/block"
 	devices, err := ioutil.ReadDir(sysBlock)
