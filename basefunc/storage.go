@@ -178,12 +178,7 @@ func (si *HostInfo) getLsblkInfo() {
 		log.Println("Get lsblk error: ", err)
 		return
 	}
-	//详情输出到lsblkInfo
-	var lsblkInfo string
-	for _, v := range resLsblk {
-		lsblkInfo = lsblkInfo + v + "\n"
-	}
-	si.Storage.LsblkInfo = lsblkInfo
+	si.Storage.LsblkInfo = resLsblk
 }
 
 //getDfInfo 获取 df -Th信息
@@ -194,11 +189,6 @@ func (si *HostInfo) getDfInfo() {
 		log.Println("Get df error: ", err)
 		return
 	}
-	//详情输出到dfInfo
-	var dfInfo string
-	for _, v := range resDfTh {
-		dfInfo = dfInfo + v + "\n"
-	}
-	si.Storage.DfInfo = dfInfo
+	si.Storage.DfInfo = resDfTh
 
 }
