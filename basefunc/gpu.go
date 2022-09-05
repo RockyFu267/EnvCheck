@@ -20,7 +20,7 @@ type GPU struct {
 //getGPUInfo 获取GPU信息
 func (si *HostInfo) getGPUInfo() {
 	//是否存在英伟达显卡
-	resNvidia, err := bc.CmdAndChangeDirToResAllInOne("./", "lspci |grep -i nvidia")
+	resNvidia, err := bc.CmdAndChangeDirToResAllInOne("./", "lspci -nn |grep -i nvidia")
 	if err != nil {
 		log.Println("Get Nvidia error: ", err)
 		return
@@ -46,17 +46,6 @@ func (si *HostInfo) getGPUInfo() {
 			GPUModeMap[tmpStr] = true
 		}
 	}
-	//是否安装了nouveau
-	resNouveau, err := bc.CmdAndChangeDirToResAllInOne("./", "lsmod | grep nouveau")
-	if err != nil {
-		log.Println("Get Nouveau error: ", err)
-		return
-	}
-	if len(resNouveau) == 0 {
-		si.GPU.Nouveau = false
-	} else {
-		si.GPU.Nouveau = true
-	}
 	//是否安装了驱动
 	resDriver, err := bc.CmdAndChangeDirToResAllInOne("./", "nvidia-smi")
 	if err != nil {
@@ -65,6 +54,17 @@ func (si *HostInfo) getGPUInfo() {
 		return
 	}
 	if len(resDriver) == 0 {
+		si.GPU.Nouveau = false
+	} else {
+		si.GPU.Nouveau = true
+	}
+	//是否安装了nouveau
+	resNouveau, err := bc.CmdAndChangeDirToResAllInOne("./", "lsmod | grep nouveau")
+	if err != nil {
+		log.Println("Get Nouveau error: ", err)
+		return
+	}
+	if len(resNouveau) == 0 {
 		si.GPU.Nouveau = false
 	} else {
 		si.GPU.Nouveau = true

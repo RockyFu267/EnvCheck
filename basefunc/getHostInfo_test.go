@@ -34,7 +34,7 @@ func Test_findModel(t *testing.T) {
 }
 
 func Test_findModelID(t *testing.T) {
-	str := findModelID(`   02:00.0 3D controller [0302]: NVIDIA Corporation Device [10de:1bb3] (rev a1)  `)
+	str := findModelID(`   af:00.0 3D controller [0302]: NVIDIA Corporation Device [10de:1bb3] (rev a1)  `)
 	fmt.Println(str)
 }
 
