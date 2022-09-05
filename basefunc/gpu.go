@@ -66,6 +66,9 @@ func (si *HostInfo) getGPUInfo() {
 
 //findModel 根据ID找到显卡型号
 func findModel(input string) string {
+	//bug-fix
+	return "unknow"
+
 	filterStr := `(?m)^` + input + `.*\s`
 	reg := regexp.MustCompile(filterStr)
 
