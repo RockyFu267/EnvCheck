@@ -56,7 +56,18 @@ func afterColon(input string) string {
 	return "unknow"
 }
 
-//BeforeDash 截取-之后的字符串
+//BeforeDash 截取-之前的字符串
+func BeforeColon(input string) string {
+	lenInput := len(input)
+	for i := lenInput - 1; i >= 0; i-- {
+		if string(input[i]) == ":" {
+			return input[:i]
+		}
+	}
+	return "unknow"
+}
+
+//BeforeDash 截取-之前的字符串
 func BeforeDash(input string) string {
 	lenInput := len(input)
 	for i := lenInput - 1; i >= 0; i-- {

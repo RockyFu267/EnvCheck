@@ -29,7 +29,12 @@ func Test_getGPUInfo(t *testing.T) {
 }
 
 func Test_findModel(t *testing.T) {
-	str := findModel("[vasdasdasd")
+	str := findModel("1bb3")
+	fmt.Println(str)
+}
+
+func Test_findModelID(t *testing.T) {
+	str := findModelID(`   02:00.0 3D controller [0302]: NVIDIA Corporation Device [10de:1bb3] (rev a1)  `)
 	fmt.Println(str)
 }
 
@@ -40,7 +45,7 @@ func Test_DeleteExtraSpace(t *testing.T) {
 }
 
 func Test_afterColon(t *testing.T) {
-	tmpstr := "172.0.0.1:443:"
+	tmpstr := "172.0.0.1443:asd"
 	str := afterColon(tmpstr)
 	fmt.Println(str)
 
@@ -50,5 +55,13 @@ func Test_BeforeDash(t *testing.T) {
 	tmpstr := "4.17.11-1.el7.elrepo.x86_64"
 	str := BeforeDash(tmpstr)
 	fmt.Println(str)
+
+}
+
+func Test_BeforeColon(t *testing.T) {
+	tmpstr := ":asdasd"
+	str := BeforeColon(tmpstr)
+	fmt.Println(str)
+	fmt.Println(len(str))
 
 }
