@@ -28,6 +28,11 @@ func Test_getGPUInfo(t *testing.T) {
 
 }
 
+func Test_findModel(t *testing.T) {
+	str := findModel("[vasdasdasd")
+	fmt.Println(str)
+}
+
 func Test_DeleteExtraSpace(t *testing.T) {
 	tmpstr := "     asdasd 		[      ]			asdasd  ]]]]  asdasd   asdas  "
 	str := DeleteExtraSpace(tmpstr)
