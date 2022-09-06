@@ -29,7 +29,7 @@ func Test_getGPUInfo(t *testing.T) {
 }
 
 func Test_findModel(t *testing.T) {
-	str := findModel("1bb3")
+	str := findModel("0049")
 	fmt.Println(str)
 }
 

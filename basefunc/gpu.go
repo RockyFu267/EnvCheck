@@ -86,6 +86,10 @@ func findModel(input string) string {
 	}
 	Model := strList[0]
 	Model = DeleteExtraSpace(Model)
+	//mapping表中存在只有ID 没有内容的记录
+	if len(Model) == 4 {
+		return "unknown"
+	}
 
 	//标记截取位置
 	var kTmp int
