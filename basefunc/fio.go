@@ -27,7 +27,7 @@ func diskIOTest(input string) {
 		//fio安装
 		if yumFio() {
 			log.Println("fio installed")
-			_, err := cmdFioTest(input)
+			_, err := CmdFioTest(input)
 			if err != nil {
 				log.Println(err)
 				return
@@ -41,11 +41,11 @@ func diskIOTest(input string) {
 
 }
 
-//cmdFioTest 执行fio命令测试获取结果
-func cmdFioTest(input string) (FioResInfo, error) {
+//CmdFioTest 执行fio命令测试获取结果
+func CmdFioTest(input string) (FioResInfo, error) {
 	pathTmp := input
-	randWrite := "fio -filename=" + pathTmp + " -direct=1 -iodepth 1 -thread -rw=randwrite -ioengine=psync -bs=16k -size=1G -numjobs=10 -runtime=10 -group_reporting -name=mytest"
-	randRead := "fio -filename=" + pathTmp + " -direct=1 -iodepth 1 -rw=randread -ioengine=psync -bs=16k -size=1G -numjobs=10 -runtime=10 -group_reporting -name=mytest"
+	randWrite := "fio -filename=" + pathTmp + " -direct=1 -iodepth 1 -thread -rw=randwrite -ioengine=psync -bs=16k -size=1G -numjobs=10 -runtime=20 -group_reporting -name=mytest"
+	randRead := "fio -filename=" + pathTmp + " -direct=1 -iodepth 1 -rw=randread -ioengine=psync -bs=16k -size=1G -numjobs=10 -runtime=20 -group_reporting -name=mytest"
 	var res FioResInfo
 	resFioRadnWrite, err := bc.CmdAndChangeDirToResAllInOne("./", randWrite)
 	if err != nil {

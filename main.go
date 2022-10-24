@@ -17,6 +17,7 @@ import (
 
 var starttrole *string = flag.String("role", "", "Use -role <master or client>")
 var starttshow *string = flag.String("show", "", "Use -show Browse web pages")
+var disktest *string = flag.String("disktest", "", "Use -disktest Show Disk IOPS")
 
 func main() {
 	//获取参数
@@ -72,6 +73,12 @@ func main() {
 	//判断启动参数 是主服务还是客户端 是否是单机模式
 	//如果是单机模式
 	if *starttrole == "" && configTmp.Mode == "http" {
+		if *disktest != "" {
+			_, err := ebf.CmdFioTest(*disktest)
+			if err != nil {
+				log.Println("Get DiskTestInfo ERROR: ", err)
+			}
+		}
 		ec.WriteRes()
 		ec.WriteResImage()
 		return
