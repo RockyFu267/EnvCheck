@@ -3,6 +3,7 @@ package basefunc
 import (
 	bc "EnvCheck/basecmd"
 	"log"
+	"strings"
 )
 
 type FioResInfo struct {
@@ -19,15 +20,22 @@ type FioReadRes struct {
 	BW   string `json:"bw"`
 }
 
-func diskIOTest(input string) {
+//DiskIOTest 执行fio验证并测试
+func (si *HostInfo) DiskIOTest(input string) {
 	//检查fio是否安装
 	if cmdFioCheck() {
 		log.Println("fio installed")
+		_, err := si.CmdFioTest(input)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		return
 	} else {
 		//fio安装
 		if yumFio() {
 			log.Println("fio installed")
-			_, err := CmdFioTest(input)
+			_, err := si.CmdFioTest(input)
 			if err != nil {
 				log.Println(err)
 				return
@@ -42,7 +50,7 @@ func diskIOTest(input string) {
 }
 
 //CmdFioTest 执行fio命令测试获取结果
-func CmdFioTest(input string) (FioResInfo, error) {
+func (si *HostInfo) CmdFioTest(input string) (FioResInfo, error) {
 	pathTmp := input
 	randWrite := "fio -filename=" + pathTmp + " -direct=1 -iodepth 1 -thread -rw=randwrite -ioengine=psync -bs=16k -size=1G -numjobs=10 -runtime=20 -group_reporting -name=mytest"
 	randRead := "fio -filename=" + pathTmp + " -direct=1 -iodepth 1 -rw=randread -ioengine=psync -bs=16k -size=1G -numjobs=10 -runtime=20 -group_reporting -name=mytest"
@@ -58,9 +66,26 @@ func CmdFioTest(input string) (FioResInfo, error) {
 		log.Println("fio randrand: ", err)
 		return res, err
 	}
-
-	log.Println(resFioRadnWrite)
-	log.Println(resFioRadnRead)
+	for _, v := range resFioRadnWrite {
+		arrayTMP := strings.Fields(DeleteExtraSpace(v))
+		if len(arrayTMP) < 2 {
+			continue
+		}
+		if arrayTMP[0] == "write:" {
+			si.Storage.DiskIO.RandWrite.IOPS, si.Storage.DiskIO.RandWrite.BW = resIOPS(DeleteExtraSpace(v))
+			break
+		}
+	}
+	for _, v := range resFioRadnRead {
+		arrayTMP := strings.Fields(DeleteExtraSpace(v))
+		if len(arrayTMP) < 2 {
+			continue
+		}
+		if arrayTMP[0] == "read:" {
+			si.Storage.DiskIO.RandRead.IOPS, si.Storage.DiskIO.RandRead.BW = resIOPS(DeleteExtraSpace(v))
+			break
+		}
+	}
 
 	return res, nil
 }
@@ -85,4 +110,24 @@ func cmdFioCheck() bool {
 	}
 	log.Println("fio --version: ", resCmdfioCheck)
 	return true
+}
+
+//resIOPS 过滤随机写的结果
+func resIOPS(input string) (iops string, bw string) {
+	// if BeforeColon(input) == write
+	arrayTMP := strings.Fields(input)
+	for _, v := range arrayTMP {
+		if len(v) <= 6 {
+			continue
+		}
+		log.Println(v)
+		log.Println(v[0:4])
+		if v[0:5] == "IOPS=" {
+			iops = v[5 : len(v)-1]
+		}
+		if v[0:3] == "BW=" {
+			bw = v[3:]
+		}
+	}
+	return iops, bw
 }

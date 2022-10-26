@@ -39,6 +39,10 @@ func main() {
 		log.Println("Get OsInfo ERROR: ", err)
 		return
 	}
+	if *disktest != "" {
+		// ebf.DiskIOTest(*disktest)
+		res.DiskIOTest(*disktest)
+	}
 	resJson, _ := json.MarshalIndent(res, "", " ")
 	log.Println(string(resJson))
 
@@ -73,12 +77,6 @@ func main() {
 	//判断启动参数 是主服务还是客户端 是否是单机模式
 	//如果是单机模式
 	if *starttrole == "" && configTmp.Mode == "http" {
-		if *disktest != "" {
-			_, err := ebf.CmdFioTest(*disktest)
-			if err != nil {
-				log.Println("Get DiskTestInfo ERROR: ", err)
-			}
-		}
 		ec.WriteRes()
 		ec.WriteResImage()
 		return

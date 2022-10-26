@@ -107,6 +107,7 @@ func findModel(input string) string {
 //findModelID 根据ID找到显卡型号ID
 func findModelID(input string) string {
 	input = DeleteExtraSpace(input)
+	//strings.Fields 基于空格切割
 	resList := strings.Fields(input)
 	//判断是不是[ID]
 	for _, v := range resList {

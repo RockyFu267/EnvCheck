@@ -34,6 +34,7 @@ type Storage struct {
 	RaidInfo    bool            `json:"raidinfo,omitempty"`
 	DataDir     DataDir         `json:"data_dir"`
 	DiskInfo    []StorageDevice `json:"storagedevice"`
+	DiskIO      FioResInfo      `json:"diskio"`
 }
 
 type DataDir struct {

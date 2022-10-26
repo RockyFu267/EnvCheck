@@ -65,3 +65,15 @@ func Test_BeforeColon(t *testing.T) {
 	fmt.Println(len(str))
 
 }
+func Test_resIOPS(t *testing.T) {
+	tmpstr := "write: IOPS=3211, BW=50.2MiB/s (52.6MB/s)(1004MiB/20003msec); 0 zone resets"
+	str1, str2 := resIOPS(tmpstr)
+	fmt.Println(str1)
+	fmt.Println(str2)
+
+	tmpstr1 := "read: IOPS=3087, BW=48.2MiB/s (50.6MB/s)(965MiB/20003msec)"
+	str3, str4 := resIOPS(tmpstr1)
+	fmt.Println(str3)
+	fmt.Println(str4)
+
+}

@@ -56,7 +56,7 @@ func afterColon(input string) string {
 	return "unknow"
 }
 
-//BeforeDash 截取-之前的字符串
+//BeforeDash 截取:之前的字符串
 func BeforeColon(input string) string {
 	lenInput := len(input)
 	for i := lenInput - 1; i >= 0; i-- {
