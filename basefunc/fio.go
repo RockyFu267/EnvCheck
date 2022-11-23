@@ -33,7 +33,7 @@ func (si *HostInfo) DiskIOTest(input string) {
 		return
 	} else {
 		//fio安装
-		if yumFio() {
+		if installFio() {
 			log.Println("fio installed")
 			_, err := si.CmdFioTest(input)
 			if err != nil {
@@ -90,36 +90,65 @@ func (si *HostInfo) CmdFioTest(input string) (FioResInfo, error) {
 	return res, nil
 }
 
-//cpFioLib64 安装fio
-func cpFioLib64() (res bool) {
+//installFio 安装fio
+func installFio() (res bool) {
 	//使用ldd获取结果
 	resLddFio, err := lddFio()
 	if err != nil {
+		log.Println(err)
 		return false
 	}
 	log.Println(resLddFio)
 	//分析结果缺少的动态库 数组
-	//缺少的数据库 复制到 默认的动态库路径
+	listNotFound := notFoundLib64(resLddFio)
 	//如果不缺 那就直接可用并验证
+	if len(listNotFound) == 0 {
+		if cmdFioCheckLocal() {
+			log.Println("fio installed")
+		} else {
+			log.Println("fio install-Error")
+			return false
+		}
+	} else {
+		//缺少的动态库 复制到 默认的动态库路径
+		for _, v := range listNotFound {
+			err := cpFioLib64(v)
+			if err != nil {
+				log.Println(err)
+				return false
+			}
+		}
+
+	}
+
 	return true
 }
 
 //notFoundLib64 获取结果缺少的动态库
-func notFoundLib64(inputdata []string) ([]string, error) {
+func notFoundLib64(inputdata []string) []string {
 	var res []string
-	for k, v := range inputdata {
-		log.Println(k, v)
+	for _, v := range inputdata {
 		tmpStr := DeleteExtraSpace(v)
-		if len(tmpStr) <= 9 {
+		if len(tmpStr) <= 13 {
 			continue
 		}
-		log.Println(k, tmpStr[len(tmpStr)-9:])
 		if tmpStr[len(tmpStr)-9:] == "not found" {
-			log.Println(k)
+			res = append(res, tmpStr[:len(tmpStr)-13])
 		}
-
 	}
-	return res, nil
+	return res
+}
+
+//cpFioLib64 动态库 复制到 默认的动态库路径
+func cpFioLib64(input string) (err error) {
+	cmd := "cp ./" + input + " /usr/lib64/"
+	_, err = bc.CmdAndChangeDirToResAllInOne("./", cmd)
+	if err != nil {
+		log.Println("cp "+input+" error: ", err)
+		return err
+	}
+	log.Println("cp " + input + " success")
+	return nil
 }
 
 //lddFio 动态库检查
@@ -134,20 +163,31 @@ func lddFio() (res []string, err error) {
 
 }
 
-//yumFio yum安装fio  暂不使用这种方式
-func yumFio() (res bool) {
-	_, err := bc.CmdAndChangeDirToResAllInOne("./", "yum install fio -y")
-	if err != nil {
-		log.Println(": ", err)
-		return false
-	}
-	log.Println("fio already installed")
-	return true
-}
+// //yumFio yum安装fio  暂不使用这种方式
+// func yumFio() (res bool) {
+// 	_, err := bc.CmdAndChangeDirToResAllInOne("./", "yum install fio -y")
+// 	if err != nil {
+// 		log.Println(": ", err)
+// 		return false
+// 	}
+// 	log.Println("fio already installed")
+// 	return true
+// }
 
 //cmdFioCheck 检查fio是否已安装
 func cmdFioCheck() bool {
 	resCmdfioCheck, err := bc.CmdAndChangeDirToResAllInOne("./", "fio --version")
+	if err != nil {
+		log.Println("fio not installed: ", err)
+		return false
+	}
+	log.Println("fio --version: ", resCmdfioCheck)
+	return true
+}
+
+//cmdFioCheckLocal 检查fio是否已安装
+func cmdFioCheckLocal() bool {
+	resCmdfioCheck, err := bc.CmdAndChangeDirToResAllInOne("./", "./fio --version")
 	if err != nil {
 		log.Println("fio not installed: ", err)
 		return false

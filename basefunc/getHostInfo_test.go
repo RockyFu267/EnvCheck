@@ -81,11 +81,7 @@ func Test_resIOPS(t *testing.T) {
 func Test_notFoundLib64(t *testing.T) {
 	var tmpstr = []string{`	linux-vdso.so.1 (0x00007ffe3b9de000)`, `	libtcmalloc_minimal.so.4 => not found`, `	libnuma.so.1 => /lib64/libnuma.so.1 (0x00007f4ef063d000)`, `	librt.so.1 => /lib64/librt.so.1 (0x00007f4ef0434000)`, `	libz.so.1 => /lib64/libz.so.1 (0x00007f4ef021d000)`, `	libpthread.so.0 => /lib64/libpthread.so.0 (0x00007f4eefffd000)`, `	libm.so.6 => /lib64/libm.so.6 (0x00007f4eefc7b000)`, `	libdl.so.2 => /lib64/libdl.so.2 (0x00007f4eefa77000)`, `	libibverbs.so.1 => not found`, `	librdmacm.so.1 => not found`, `	libc.so.6 => /lib64/libc.so.6 (0x00007f4eef6b5000)`, `	/lib64/ld-linux-x86-64.so.2 (0x00007f4ef0849000)`}
 
-	str, err := notFoundLib64(tmpstr)
-	if err != nil {
-		log.Println(err)
-		return
-	}
+	str := notFoundLib64(tmpstr)
 	fmt.Println(str)
 
 }
