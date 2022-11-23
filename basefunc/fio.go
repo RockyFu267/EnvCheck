@@ -90,7 +90,38 @@ func (si *HostInfo) CmdFioTest(input string) (FioResInfo, error) {
 	return res, nil
 }
 
-//yumFio yum安装fio
+//cpFioLib64 安装fio
+func cpFioLib64() (res bool) {
+	//使用ldd获取结果
+	resLddFio, err := lddFio()
+	if err != nil {
+		return false
+	}
+	log.Println(resLddFio)
+	//分析结果缺少的动态库 数组
+	//缺少的数据库 复制到 默认的动态库路径
+	//如果不缺 那就直接可用并验证
+	return true
+}
+
+//notFoundLib64 获取结果缺少的动态库
+func notFoundLib64(inputdata []string) ([]string, error) {
+
+}
+
+//lddFio 动态库检查
+func lddFio() (res []string, err error) {
+	res, err = bc.CmdAndChangeDirToResAllInOne("./", "./ldd ./fio")
+	if err != nil {
+		log.Println("ldd error: ", err)
+		return res, err
+	}
+	log.Println("ldd success")
+	return res, nil
+
+}
+
+//yumFio yum安装fio  暂不使用这种方式
 func yumFio() (res bool) {
 	_, err := bc.CmdAndChangeDirToResAllInOne("./", "yum install fio -y")
 	if err != nil {
