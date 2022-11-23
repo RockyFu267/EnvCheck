@@ -106,7 +106,20 @@ func cpFioLib64() (res bool) {
 
 //notFoundLib64 获取结果缺少的动态库
 func notFoundLib64(inputdata []string) ([]string, error) {
+	var res []string
+	for k, v := range inputdata {
+		log.Println(k, v)
+		tmpStr := DeleteExtraSpace(v)
+		if len(tmpStr) <= 9 {
+			continue
+		}
+		log.Println(k, tmpStr[len(tmpStr)-9:])
+		if tmpStr[len(tmpStr)-9:] == "not found" {
+			log.Println(k)
+		}
 
+	}
+	return res, nil
 }
 
 //lddFio 动态库检查
