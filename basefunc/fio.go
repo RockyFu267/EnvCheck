@@ -118,6 +118,12 @@ func installFio() (res bool) {
 				return false
 			}
 		}
+		if cmdFioCheckLocal() {
+			log.Println("fio installed")
+		} else {
+			log.Println("fio install-Error")
+			return false
+		}
 
 	}
 
@@ -141,7 +147,7 @@ func notFoundLib64(inputdata []string) []string {
 
 //cpFioLib64 动态库 复制到 默认的动态库路径
 func cpFioLib64(input string) (err error) {
-	cmd := "cp ./" + input + " /usr/lib64/"
+	cmd := "cp ./fio-lib64/" + input + " /usr/lib64/"
 	_, err = bc.CmdAndChangeDirToResAllInOne("./", cmd)
 	if err != nil {
 		log.Println("cp "+input+" error: ", err)
@@ -153,7 +159,7 @@ func cpFioLib64(input string) (err error) {
 
 //lddFio 动态库检查
 func lddFio() (res []string, err error) {
-	res, err = bc.CmdAndChangeDirToResAllInOne("./", "./ldd ./fio")
+	res, err = bc.CmdAndChangeDirToResAllInOne("./", "./fio-lib64/ldd ./fio-lib64/fio")
 	if err != nil {
 		log.Println("ldd error: ", err)
 		return res, err
@@ -187,7 +193,7 @@ func cmdFioCheck() bool {
 
 //cmdFioCheckLocal 检查fio是否已安装
 func cmdFioCheckLocal() bool {
-	resCmdfioCheck, err := bc.CmdAndChangeDirToResAllInOne("./", "./fio --version")
+	resCmdfioCheck, err := bc.CmdAndChangeDirToResAllInOne("./", "./fio-lib64/fio --version")
 	if err != nil {
 		log.Println("fio not installed: ", err)
 		return false
