@@ -35,7 +35,7 @@ func (si *HostInfo) DiskIOTest(input string) {
 		//fio安装
 		if installFio() {
 			log.Println("fio installed")
-			_, err := si.CmdFioTest(input)
+			_, err := si.CmdFioTestLocal(input)
 			if err != nil {
 				log.Println(err)
 				return
@@ -54,6 +54,47 @@ func (si *HostInfo) CmdFioTest(input string) (FioResInfo, error) {
 	pathTmp := input
 	randWrite := "fio -filename=" + pathTmp + " -direct=1 -iodepth 1 -thread -rw=randwrite -ioengine=psync -bs=16k -size=1G -numjobs=10 -runtime=20 -group_reporting -name=mytest"
 	randRead := "fio -filename=" + pathTmp + " -direct=1 -iodepth 1 -rw=randread -ioengine=psync -bs=16k -size=1G -numjobs=10 -runtime=20 -group_reporting -name=mytest"
+	var res FioResInfo
+	resFioRadnWrite, err := bc.CmdAndChangeDirToResAllInOne("./", randWrite)
+	if err != nil {
+		log.Println("fio randwrite: ", err)
+		return res, err
+	}
+
+	resFioRadnRead, err := bc.CmdAndChangeDirToResAllInOne("./", randRead)
+	if err != nil {
+		log.Println("fio randrand: ", err)
+		return res, err
+	}
+	for _, v := range resFioRadnWrite {
+		arrayTMP := strings.Fields(DeleteExtraSpace(v))
+		if len(arrayTMP) < 2 {
+			continue
+		}
+		if arrayTMP[0] == "write:" {
+			si.Storage.DiskIO.RandWrite.IOPS, si.Storage.DiskIO.RandWrite.BW = resIOPS(DeleteExtraSpace(v))
+			break
+		}
+	}
+	for _, v := range resFioRadnRead {
+		arrayTMP := strings.Fields(DeleteExtraSpace(v))
+		if len(arrayTMP) < 2 {
+			continue
+		}
+		if arrayTMP[0] == "read:" {
+			si.Storage.DiskIO.RandRead.IOPS, si.Storage.DiskIO.RandRead.BW = resIOPS(DeleteExtraSpace(v))
+			break
+		}
+	}
+
+	return res, nil
+}
+
+//CmdFioTestLocal 执行fio命令测试获取结果
+func (si *HostInfo) CmdFioTestLocal(input string) (FioResInfo, error) {
+	pathTmp := input
+	randWrite := "./fio-lib64/fio -filename=" + pathTmp + " -direct=1 -iodepth 1 -thread -rw=randwrite -ioengine=psync -bs=16k -size=1G -numjobs=10 -runtime=20 -group_reporting -name=mytest"
+	randRead := "./fio-lib64/fio -filename=" + pathTmp + " -direct=1 -iodepth 1 -rw=randread -ioengine=psync -bs=16k -size=1G -numjobs=10 -runtime=20 -group_reporting -name=mytest"
 	var res FioResInfo
 	resFioRadnWrite, err := bc.CmdAndChangeDirToResAllInOne("./", randWrite)
 	if err != nil {
