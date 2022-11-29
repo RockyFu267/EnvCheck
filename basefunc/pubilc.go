@@ -56,6 +56,32 @@ func afterColon(input string) string {
 	return "unknow"
 }
 
+//BeforeDash 截取:之前的字符串
+func BeforeColon(input string) string {
+	lenInput := len(input)
+	for i := lenInput - 1; i >= 0; i-- {
+		if string(input[i]) == ":" {
+			return input[:i]
+		}
+	}
+	return "unknow"
+}
+
+//BeforeDash 截取-之前的字符串
+func BeforeDash(input string) string {
+	lenInput := len(input)
+	for i := lenInput - 1; i >= 0; i-- {
+		if string(input[i]) == "-" {
+			//防止崩溃
+			if i+1 >= lenInput {
+				return "unknow"
+			}
+			return input[:i]
+		}
+	}
+	return "unknow"
+}
+
 // //getMemorySie 获取内存大小 手动检查文件
 // func getMemorySie() (int64, error) {
 // 	resSize, err := bc.CmdAndChangeDirToResAllInOne("./", "cat /Users/fuao/Downloads/proc/meminfo | grep 'MemTotal' | awk '{print $2}'")

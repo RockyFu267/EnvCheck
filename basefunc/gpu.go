@@ -5,6 +5,7 @@ import (
 	gpu "EnvCheck/gpuid"
 	"log"
 	"regexp"
+	"strings"
 )
 
 // GPU information.
@@ -19,7 +20,7 @@ type GPU struct {
 //getGPUInfo 获取GPU信息
 func (si *HostInfo) getGPUInfo() {
 	//是否存在英伟达显卡
-	resNvidia, err := bc.CmdAndChangeDirToResAllInOne("./", "lspci |grep -i nvidia | awk '{print $7}'")
+	resNvidia, err := bc.CmdAndChangeDirToResAllInOne("./", "lspci -nn |grep -i nvidia")
 	if err != nil {
 		log.Println("Get Nvidia error: ", err)
 		return
@@ -34,20 +35,16 @@ func (si *HostInfo) getGPUInfo() {
 	//显卡数量
 	si.GPU.Count = len(resNvidia)
 	//根据ID获取对应的型号
+	GPUModeMap := make(map[string]bool)
 	for _, v := range resNvidia {
-		tmpStr := findModel(v)
-		si.GPU.Model = append(si.GPU.Model, tmpStr)
-	}
-	//是否安装了nouveau
-	resNouveau, err := bc.CmdAndChangeDirToResAllInOne("./", "lsmod | grep nouveau")
-	if err != nil {
-		log.Println("Get Nouveau error: ", err)
-		return
-	}
-	if len(resNouveau) == 0 {
-		si.GPU.Nouveau = false
-	} else {
-		si.GPU.Nouveau = true
+		tmpStr := findModelID(v)
+		tmpStr = findModel(tmpStr)
+		if _, ok := GPUModeMap[tmpStr]; ok {
+			continue
+		} else {
+			si.GPU.Model = append(si.GPU.Model, tmpStr)
+			GPUModeMap[tmpStr] = true
+		}
 	}
 	//是否安装了驱动
 	resDriver, err := bc.CmdAndChangeDirToResAllInOne("./", "nvidia-smi")
@@ -61,11 +58,23 @@ func (si *HostInfo) getGPUInfo() {
 	} else {
 		si.GPU.Nouveau = true
 	}
+	//是否安装了nouveau
+	resNouveau, err := bc.CmdAndChangeDirToResAllInOne("./", "lsmod | grep nouveau")
+	if err != nil {
+		log.Println("Get Nouveau error: ", err)
+		return
+	}
+	if len(resNouveau) == 0 {
+		si.GPU.Nouveau = false
+	} else {
+		si.GPU.Nouveau = true
+	}
 
 }
 
 //findModel 根据ID找到显卡型号
 func findModel(input string) string {
+	input = DeleteExtraSpace(input)
 	filterStr := `(?m)^` + input + `.*\s`
 	reg := regexp.MustCompile(filterStr)
 
@@ -77,6 +86,10 @@ func findModel(input string) string {
 	}
 	Model := strList[0]
 	Model = DeleteExtraSpace(Model)
+	//mapping表中存在只有ID 没有内容的记录
+	if len(Model) == 4 {
+		return "unknown"
+	}
 
 	//标记截取位置
 	var kTmp int
@@ -89,4 +102,19 @@ func findModel(input string) string {
 
 	return Model[kTmp+1:]
 
+}
+
+//findModelID 根据ID找到显卡型号ID
+func findModelID(input string) string {
+	input = DeleteExtraSpace(input)
+	//strings.Fields 基于空格切割
+	resList := strings.Fields(input)
+	//判断是不是[ID]
+	for _, v := range resList {
+		strTmp := BeforeColon(v)
+		if strTmp == "10de" {
+			return afterColon(v)
+		}
+	}
+	return "unknow"
 }

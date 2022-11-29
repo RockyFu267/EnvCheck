@@ -27,6 +27,12 @@ func (si *HostInfo) getStorageInfo() {
 	si.getRootDirSize()
 	//获取是否存在 /data
 	si.getDataDir()
+	//获取df
+	si.getDfInfo()
+	//获取lsblk
+	si.getLsblkInfo()
+	//获取raid
+	si.getRaidInfo()
 
 	sysBlock := "/sys/block"
 	devices, err := ioutil.ReadDir(sysBlock)
@@ -163,5 +169,44 @@ func (si *HostInfo) getDataDir() {
 	resType = DeleteExtraSpace(resType)
 	resTypeList := strings.Fields(resType)
 	si.Storage.DataDir.Type = resTypeList[1]
+
+}
+
+//getLsblkInfo 获取 lsblkInfo
+func (si *HostInfo) getLsblkInfo() {
+	//检查是否存在挂载点
+	resLsblk, err := bc.CmdAndChangeDirToResAllInOne("./", "lsblk")
+	if err != nil {
+		log.Println("Get lsblk error: ", err)
+		return
+	}
+	si.Storage.LsblkInfo = resLsblk
+}
+
+//getDfInfo 获取 df -Th信息
+func (si *HostInfo) getDfInfo() {
+	//检查是否存在挂载点
+	resDfTh, err := bc.CmdAndChangeDirToResAllInOne("./", `df -Th | grep -v "tmpfs"|  grep -v "overlay"`)
+	if err != nil {
+		log.Println("Get df error: ", err)
+		return
+	}
+	si.Storage.DfInfo = resDfTh
+
+}
+
+//getRaidInfo 获取 raid信息
+func (si *HostInfo) getRaidInfo() {
+	//检查是否存在挂载点
+	resRaidInfo, err := bc.CmdAndChangeDirToResAllInOne("./", `cat /proc/scsi/scsi`)
+	if err != nil {
+		log.Println("Get df error: ", err)
+		return
+	}
+	if len(resRaidInfo) >= 2 {
+		si.Storage.RaidInfo = true
+	} else {
+		si.Storage.RaidInfo = false
+	}
 
 }

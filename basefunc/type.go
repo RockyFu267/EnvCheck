@@ -1,7 +1,7 @@
 package basefunc
 
 // Version of the EnvCheck library.
-const Version = "0.0.1"
+const Version = "0.2.1"
 
 var HostInfoList []HostInfo
 var CheckWarning []string
@@ -29,8 +29,12 @@ type HostName struct {
 }
 type Storage struct {
 	RootDirSize string          `json:"root_dir_size,omitempty"`
+	DfInfo      []string        `json:"dfinfo,omitempty"`
+	LsblkInfo   []string        `json:"lsblkinfo,omitempty"`
+	RaidInfo    bool            `json:"raidinfo,omitempty"`
 	DataDir     DataDir         `json:"data_dir"`
 	DiskInfo    []StorageDevice `json:"storagedevice"`
+	DiskIO      FioResInfo      `json:"diskio"`
 }
 
 type DataDir struct {
