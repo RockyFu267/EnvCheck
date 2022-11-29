@@ -17,7 +17,7 @@ import (
 
 var starttrole *string = flag.String("role", "", "Use -role <master or client>")
 var starttshow *string = flag.String("show", "", "Use -show Browse web pages")
-var disktest *string = flag.String("disktest", "", "Use -disktest Show Disk IOPS")
+// var disktest *string = flag.String("disktest", "", "Use -disktest Show Disk IOPS")
 
 func main() {
 	//获取参数
@@ -39,10 +39,11 @@ func main() {
 		log.Println("Get OsInfo ERROR: ", err)
 		return
 	}
-	if *disktest != "" {
-		// ebf.DiskIOTest(*disktest)
-		res.DiskIOTest(*disktest)
-	}
+	// //单机执行
+	// if *disktest != "" {
+	// 	// ebf.DiskIOTest(*disktest)
+	// 	res.DiskIOTest(*disktest)
+	// }
 	resJson, _ := json.MarshalIndent(res, "", " ")
 	log.Println(string(resJson))
 
