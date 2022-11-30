@@ -39,6 +39,7 @@ func main() {
 		log.Println("Get OsInfo ERROR: ", err)
 		return
 	}
+	configTmp := ec.ReadConfig(pwdPath)
 	// //单机执行
 	// if *disktest != "" {
 	// 	// ebf.DiskIOTest(*disktest)
@@ -49,7 +50,7 @@ func main() {
 
 	ebf.HostInfoList = append(ebf.HostInfoList, res)
 
-	configTmp := ec.ReadConfig(pwdPath)
+	
 	posturlTmp := "http://" + configTmp.MasterIP + ":" + configTmp.MasterPort + "/env_info"
 	//web浏览模式
 	if len(*starttshow) > 0 {

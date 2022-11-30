@@ -17,7 +17,7 @@ func Test_GetHostInfo(t *testing.T) {
 }
 
 func Test_CheckHostName(t *testing.T) {
-	str := "gzbh-intelmbx005.gzbh.baidu.com"
+	str := "test.test.test.com"
 	res := CheckHostName(str)
 	fmt.Println(res)
 }

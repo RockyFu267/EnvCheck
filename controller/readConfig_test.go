@@ -9,8 +9,10 @@ import (
 
 func Test_ReadConfig(t *testing.T) {
 	res := ReadConfig("/Users/fuao/Desktop/code/github/EnvCheck")
-	fmt.Println(res)
-	fmt.Println(res.MasterIP, res.MasterPort, res.RemotePath)
+	resJson, _ := json.MarshalIndent(res, "", " ")
+	fmt.Println(string(resJson))
+	fmt.Println(res.DiskTestInfo)
+
 }
 
 func Test_ReadResJson(t *testing.T) {
