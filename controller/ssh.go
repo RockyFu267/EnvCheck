@@ -76,8 +76,14 @@ func (shost *HostPara) SSHClient(pwd string, remotePath string, mastetIp string,
 	}
 	log.Println(shost.IP + ":赋权完成")
 
+	//判断是否要开启磁盘检测
+	if shost.DiskCheck == "enable" {
+		cmdTmp = "cd " + remotePath + " && ./envcheck -role client " + "-disktest " + shost.DiskCheckPath
+	} else {
+		cmdTmp = "cd " + remotePath + " && ./envcheck -role client"
+	}
 	//启动client
-	cmdTmp = "cd " + remotePath + " && ./envcheck -role client"
+	// cmdTmp = "cd " + remotePath + " && ./envcheck -role client"
 	_, err = newTestCli.Run(cmdTmp)
 	if err != nil {
 		log.Println("start client error: ", err)
