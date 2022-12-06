@@ -140,13 +140,13 @@ func installFio() (res bool) {
 		//***结束***
 		return false
 	}
+	//如果不存在就解压
 	if !checkDir {
 		resTarLib64 := cmdFioTarLib64()
 		if !resTarLib64 {
 			return false
 		}
 	}
-	//如果不存在就解压解压
 	//使用ldd获取结果
 	resLddFio, err := lddFio()
 	if err != nil {
