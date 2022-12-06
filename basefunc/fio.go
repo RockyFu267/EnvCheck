@@ -133,6 +133,20 @@ func (si *HostInfo) CmdFioTestLocal(input string) (FioResInfo, error) {
 
 //installFio 安装fio
 func installFio() (res bool) {
+	//检查目录是否存在
+	checkDir, err := CheckDir("fio-lib64")
+	if err != nil {
+		log.Println("Check fio-lib64 ERROR: ", err)
+		//***结束***
+		return false
+	}
+	if !checkDir {
+		resTarLib64 := cmdFioTarLib64()
+		if !resTarLib64 {
+			return false
+		}
+	}
+	//如果不存在就解压解压
 	//使用ldd获取结果
 	resLddFio, err := lddFio()
 	if err != nil {
@@ -240,6 +254,17 @@ func cmdFioCheckLocal() bool {
 		return false
 	}
 	log.Println("fio --version: ", resCmdfioCheck)
+	return true
+}
+
+//cmdFioTarLib64 解压tar包
+func cmdFioTarLib64() bool {
+	resCmdfioTar, err := bc.CmdAndChangeDirToResAllInOne("./", "tar -zxvf fio-lib64.tar")
+	if err != nil {
+		log.Println("lib64 tar error: ", err)
+		return false
+	}
+	log.Println("tar: ", resCmdfioTar)
 	return true
 }
 
