@@ -289,6 +289,7 @@ func WriteResImage() {
 		for k, v := range diskResMap {
 			diskResStr = diskResStr + " 主机名：" + k + " 随机读速度：" + v.RandWrite.BW + " 随机读IOPS: " + v.RandRead.IOPS + " 随机写速度：" + v.RandWrite.BW + " 随机写IOPS: " + v.RandWrite.IOPS + "\n"
 		}
+		strRes = strRes + "磁盘测试结果: " + diskResStr + "\n"
 	}
 	fmt.Println(strRes)
 
