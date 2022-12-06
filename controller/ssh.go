@@ -54,6 +54,14 @@ func (shost *HostPara) SSHClient(pwd string, remotePath string, mastetIp string,
 		ebf.PostInfoList = append(ebf.PostInfoList, tmpPostInfo)
 		return
 	}
+	//复制lib64
+	_, err = newTestCli.UploadFile(pwd+"/fio-lib64.tar", remotePath+"fio-lib64.tar")
+	if err != nil {
+		log.Println("copy fio-lib64.tar error: ", err)
+		tmpPostInfo.Res = false
+		ebf.PostInfoList = append(ebf.PostInfoList, tmpPostInfo)
+		return
+	}
 	log.Println(shost.IP + ":复制完成")
 
 	//赋权
