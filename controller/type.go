@@ -8,24 +8,24 @@ type ResData struct {
 
 //EnvConf yaml配置的key不能用 _ 否则会信息丢失
 type EnvConf struct {
-	MasterIP     string     `json:"masterip"`
-	MasterPort   string     `json:"masterport"`
-	Mode         string     `json:"mode"`
-	RemotePath   string     `json:"remotepath"`
-	DiskTestInfo DiskTest   `json:"disktest"`
-	Host         []HostPara `json:"host"`
+	MasterIP   string     `json:"masterip"`
+	MasterPort string     `json:"masterport"`
+	Mode       string     `json:"mode"`
+	RemotePath string     `json:"remotepath"`
+	Disk       DiskPara   `json:"disk"`
+	Host       []HostPara `json:"host"`
 }
-type DiskTest struct {
+type DiskPara struct {
 	Type string `json:"type"`
 	//DiskTestPath 不能为空
-	DiskTestPath string `json:"disktestpath"`
+	DiskCheckPath string `json:"diskcheckpath"`
 }
 
 type HostPara struct {
-	IP           string `json:"ip"`
-	User         string `json:"user"`
-	Password     string `json:"password"`
-	Port         string `json:"sshport,omitempty"`
-	DiskTestBool bool   `json:"disktest,omitempty"`
-	DiskTestPath string `json:"disktestpath,omitempty"`
+	IP            string `json:"ip"`
+	User          string `json:"user"`
+	Password      string `json:"password"`
+	Port          string `json:"sshport,omitempty"`
+	DiskCheck     string `json:"diskcheck,omitempty"`
+	DiskCheckPath string `json:"diskcheckpath,omitempty"`
 }

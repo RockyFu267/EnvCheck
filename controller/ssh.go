@@ -54,6 +54,14 @@ func (shost *HostPara) SSHClient(pwd string, remotePath string, mastetIp string,
 		ebf.PostInfoList = append(ebf.PostInfoList, tmpPostInfo)
 		return
 	}
+	//复制lib64
+	_, err = newTestCli.UploadFile(pwd+"/fio-lib64.tar", remotePath+"fio-lib64.tar")
+	if err != nil {
+		log.Println("copy fio-lib64.tar error: ", err)
+		tmpPostInfo.Res = false
+		ebf.PostInfoList = append(ebf.PostInfoList, tmpPostInfo)
+		return
+	}
 	log.Println(shost.IP + ":复制完成")
 
 	//赋权
@@ -76,8 +84,14 @@ func (shost *HostPara) SSHClient(pwd string, remotePath string, mastetIp string,
 	}
 	log.Println(shost.IP + ":赋权完成")
 
+	//判断是否要开启磁盘检测
+	if shost.DiskCheck == "enable" {
+		cmdTmp = "cd " + remotePath + " && ./envcheck -role client " + "-disktest " + shost.DiskCheckPath
+	} else {
+		cmdTmp = "cd " + remotePath + " && ./envcheck -role client"
+	}
 	//启动client
-	cmdTmp = "cd " + remotePath + " && ./envcheck -role client"
+	// cmdTmp = "cd " + remotePath + " && ./envcheck -role client"
 	_, err = newTestCli.Run(cmdTmp)
 	if err != nil {
 		log.Println("start client error: ", err)

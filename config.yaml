@@ -6,10 +6,11 @@ masterport: 8282
 mode: http
 #  remotepath 远程路径 默认路径为tmp
 remotepath: /tmp/
-# 磁盘性能检测 none all custom single
-disktest: 
+# 磁盘性能检测 none all custom 
+disk: 
   type: none
-  disktestpath: /tmp/aaaa
+  # 测试的文件路径
+  diskcheckpath: /tmp/aaaa
 # host 除部署节点以外其他要收集的机器信息
 host:
   - ip: 192.168.0.3
@@ -17,11 +18,12 @@ host:
     password: asdasdad
     #默认可以不添加
     sshport: 22
-    disktestpath: /tmp/bbbb
+    diskcheck: enable
+    diskcheckpath: /tmp/bbbb
   - ip: 192.168.0.4
     user: root
     password: asdasdasd
   - ip: 192.168.0.5
     user: root
     password: asdasdasd
-    disktest: fasle
+    diskcheck: disable

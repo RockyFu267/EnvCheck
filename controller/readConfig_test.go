@@ -8,10 +8,13 @@ import (
 )
 
 func Test_ReadConfig(t *testing.T) {
-	res := ReadConfig("/Users/fuao/Desktop/code/github/EnvCheck")
+	res, err := ReadConfig("/Users/fuao/Desktop/code/github/EnvCheck")
+	if err != nil {
+		log.Println(err)
+	}
 	resJson, _ := json.MarshalIndent(res, "", " ")
 	fmt.Println(string(resJson))
-	fmt.Println(res.DiskTestInfo)
+	fmt.Println(res.Host[0].DiskCheck)
 
 }
 

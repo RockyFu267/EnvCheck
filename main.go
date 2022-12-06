@@ -17,7 +17,7 @@ import (
 
 var starttrole *string = flag.String("role", "", "Use -role <master or client>")
 var starttshow *string = flag.String("show", "", "Use -show Browse web pages")
-// var disktest *string = flag.String("disktest", "", "Use -disktest Show Disk IOPS")
+var disktest *string = flag.String("disktest", "", "Use -disktest Show Disk IOPS")
 
 func main() {
 	//获取参数
@@ -39,18 +39,21 @@ func main() {
 		log.Println("Get OsInfo ERROR: ", err)
 		return
 	}
-	configTmp := ec.ReadConfig(pwdPath)
-	// //单机执行
-	// if *disktest != "" {
-	// 	// ebf.DiskIOTest(*disktest)
-	// 	res.DiskIOTest(*disktest)
-	// }
+	configTmp, err := ec.ReadConfig(pwdPath)
+	if err != nil {
+		log.Println("readConfig Errors:", err)
+		return
+	}
+	//单机执行
+	if *disktest != "" {
+		// ebf.DiskIOTest(*disktest)
+		res.DiskIOTest(*disktest)
+	}
 	resJson, _ := json.MarshalIndent(res, "", " ")
 	log.Println(string(resJson))
 
 	ebf.HostInfoList = append(ebf.HostInfoList, res)
 
-	
 	posturlTmp := "http://" + configTmp.MasterIP + ":" + configTmp.MasterPort + "/env_info"
 	//web浏览模式
 	if len(*starttshow) > 0 {

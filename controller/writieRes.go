@@ -113,6 +113,7 @@ func WriteResImage() {
 	netCardSpeedMap := make(map[string]bool)
 	netCardSMap := make(map[string]bool)
 	illegalHostMap := make(map[string]bool)
+	diskResMap := make(map[string]ebf.FioResInfo)
 	for _, v := range ebf.HostInfoList {
 		//是否虚拟机
 		// if _, ok := hypervisorMap[v.Hypervisor]; ok {
@@ -183,6 +184,15 @@ func WriteResImage() {
 		//检查主机名是否合法
 		if !v.HostName.CheckRes {
 			illegalHostMap[v.Meta.IP] = true
+		}
+
+		if v.Storage.DiskIO.RandRead.BW != "" && v.Storage.DiskIO.RandRead.IOPS != "" && v.Storage.DiskIO.RandWrite.BW != "" && v.Storage.DiskIO.RandWrite.IOPS != "" {
+			var diskResTmp ebf.FioResInfo
+			diskResTmp.RandRead.BW = v.Storage.DiskIO.RandRead.BW
+			diskResTmp.RandRead.IOPS = v.Storage.DiskIO.RandRead.IOPS
+			diskResTmp.RandWrite.BW = v.Storage.DiskIO.RandWrite.BW
+			diskResTmp.RandWrite.IOPS = v.Storage.DiskIO.RandWrite.IOPS
+			diskResMap[v.HostName.HostNameStr] = diskResTmp
 		}
 
 	}
@@ -273,6 +283,14 @@ func WriteResImage() {
 		strRes = strRes + "需要修改的主机名的机器列表: " + illegalHostStr + "\n"
 	}
 
+	//主机名小写的机器列表
+	var diskResStr string
+	if len(diskResMap) > 0 {
+		for k, v := range diskResMap {
+			diskResStr = diskResStr + " 主机名：" + k + " 随机读带宽速率：" + v.RandRead.BW + " 随机读IOPS: " + v.RandRead.IOPS + " 随机写带宽速率：" + v.RandWrite.BW + " 随机写IOPS: " + v.RandWrite.IOPS + "\n"
+		}
+		strRes = strRes + "磁盘测试结果: \n" + diskResStr + "\n"
+	}
 	fmt.Println(strRes)
 
 	//写入文件
