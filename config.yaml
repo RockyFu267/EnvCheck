@@ -1,15 +1,16 @@
-# masterip  需要修改 master角色的IP 
+# masterip  需要修改 master角色的IP 本机IP
 masterip: 192.168.0.2
 # masterport 默认不需要改  master角色的监听端口  如果没有端口冲突，
 masterport: 8282
 # mode  默认不需要改  模式: http 或 tcp ，如果客户环境可以使用ssh协议，推荐使用http，如果不支持ssh，推荐使用 tcp
 mode: http
 #  remotepath 远程路径 默认路径为tmp
-remotepath: /tmp/
-# 磁盘性能检测 none all custom 
-disk: 
+remotepath: /tmp
+# 磁盘性能检测 none all custom
+disk:
+  # 1、none：host列表中默认不开启检测  2、all：host列表中默认开启检测  3、custom：以host列表中的配置为准 全局配置
   type: none
-  # 测试的文件路径
+  # 测试的文件路径 全局配置
   diskcheckpath: /tmp/aaaa
 # host 除部署节点以外其他要收集的机器信息
 host:
@@ -19,6 +20,7 @@ host:
     #默认可以不添加
     sshport: 22
     diskcheck: enable
+    #该路径如果不配置 则默认使用全局配置
     diskcheckpath: /tmp/bbbb
   - ip: 192.168.0.4
     user: root
@@ -26,4 +28,5 @@ host:
   - ip: 192.168.0.5
     user: root
     password: asdasdasd
+    #如果配置该字段，以该字段为准
     diskcheck: disable
