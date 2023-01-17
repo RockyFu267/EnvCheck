@@ -82,7 +82,26 @@ func (shost *HostPara) SSHClient(pwd string, remotePath string, mastetIp string,
 		ebf.PostInfoList = append(ebf.PostInfoList, tmpPostInfo)
 		return
 	}
+	//赋权
+	cmdTmp = "chmod 777 " + remotePath + "fio-lib64.tar"
+	_, err = newTestCli.Run(cmdTmp)
+	if err != nil {
+		log.Println("chmod client error: ", err)
+		tmpPostInfo.Res = false
+		ebf.PostInfoList = append(ebf.PostInfoList, tmpPostInfo)
+		return
+	}
 	log.Println(shost.IP + ":赋权完成")
+	//解压
+	cmdTmp = "tar -zxvf " + remotePath + "fio-lib64.tar -C " + remotePath
+	_, err = newTestCli.Run(cmdTmp)
+	if err != nil {
+		log.Println("chmod client error: ", err)
+		tmpPostInfo.Res = false
+		ebf.PostInfoList = append(ebf.PostInfoList, tmpPostInfo)
+		return
+	}
+	log.Println(shost.IP + ":解压完成")
 
 	//判断是否要开启磁盘检测
 	if shost.DiskCheck == "enable" {

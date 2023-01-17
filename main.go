@@ -47,7 +47,7 @@ func main() {
 	//单机执行
 	if *disktest != "" {
 		// ebf.DiskIOTest(*disktest)
-		res.DiskIOTest(*disktest)
+		res.DiskIOTest(*disktest, pwdPath)
 	}
 	resJson, _ := json.MarshalIndent(res, "", " ")
 	log.Println(string(resJson))

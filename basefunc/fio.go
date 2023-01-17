@@ -21,7 +21,7 @@ type FioReadRes struct {
 }
 
 //DiskIOTest 执行fio验证并测试
-func (si *HostInfo) DiskIOTest(input string) {
+func (si *HostInfo) DiskIOTest(input string, pwdPath string) {
 	//检查fio是否安装
 	if cmdFioCheck() {
 		log.Println("fio installed")
@@ -33,9 +33,9 @@ func (si *HostInfo) DiskIOTest(input string) {
 		return
 	} else {
 		//fio安装
-		if installFio() {
+		if installFio(pwdPath) {
 			log.Println("fio installed")
-			_, err := si.CmdFioTestLocal(input)
+			_, err := si.CmdFioTestLocal(input, pwdPath)
 			if err != nil {
 				log.Println(err)
 				return
@@ -91,10 +91,10 @@ func (si *HostInfo) CmdFioTest(input string) (FioResInfo, error) {
 }
 
 //CmdFioTestLocal 执行fio命令测试获取结果
-func (si *HostInfo) CmdFioTestLocal(input string) (FioResInfo, error) {
+func (si *HostInfo) CmdFioTestLocal(input string, pwdPath string) (FioResInfo, error) {
 	pathTmp := input
-	randWrite := "./fio-lib64/fio -filename=" + pathTmp + " -direct=1 -iodepth 1 -thread -rw=randwrite -ioengine=psync -bs=16k -size=1G -numjobs=10 -runtime=20 -group_reporting -name=mytest"
-	randRead := "./fio-lib64/fio -filename=" + pathTmp + " -direct=1 -iodepth 1 -rw=randread -ioengine=psync -bs=16k -size=1G -numjobs=10 -runtime=20 -group_reporting -name=mytest"
+	randWrite := pwdPath + "/fio-lib64/fio -filename=" + pathTmp + " -direct=1 -iodepth 1 -thread -rw=randwrite -ioengine=psync -bs=16k -size=1G -numjobs=10 -runtime=20 -group_reporting -name=mytest"
+	randRead := pwdPath + "/fio-lib64/fio -filename=" + pathTmp + " -direct=1 -iodepth 1 -rw=randread -ioengine=psync -bs=16k -size=1G -numjobs=10 -runtime=20 -group_reporting -name=mytest"
 	var res FioResInfo
 	resFioRadnWrite, err := bc.CmdAndChangeDirToResAllInOne("./", randWrite)
 	if err != nil {
@@ -132,9 +132,9 @@ func (si *HostInfo) CmdFioTestLocal(input string) (FioResInfo, error) {
 }
 
 //installFio 安装fio
-func installFio() (res bool) {
+func installFio(pwdPath string) (res bool) {
 	//检查目录是否存在
-	checkDir, err := CheckDir("fio-lib64")
+	checkDir, err := CheckDir(pwdPath + "/fio-lib64")
 	if err != nil {
 		log.Println("Check fio-lib64 ERROR: ", err)
 		//***结束***
@@ -142,13 +142,13 @@ func installFio() (res bool) {
 	}
 	//如果不存在就解压
 	if !checkDir {
-		resTarLib64 := cmdFioTarLib64()
+		resTarLib64 := cmdFioTarLib64(pwdPath)
 		if !resTarLib64 {
 			return false
 		}
 	}
 	//使用ldd获取结果
-	resLddFio, err := lddFio()
+	resLddFio, err := lddFio(pwdPath)
 	if err != nil {
 		log.Println(err)
 		return false
@@ -158,7 +158,7 @@ func installFio() (res bool) {
 	listNotFound := notFoundLib64(resLddFio)
 	//如果不缺 那就直接可用并验证
 	if len(listNotFound) == 0 {
-		if cmdFioCheckLocal() {
+		if cmdFioCheckLocal(pwdPath) {
 			log.Println("fio installed")
 		} else {
 			log.Println("fio install-Error")
@@ -167,13 +167,13 @@ func installFio() (res bool) {
 	} else {
 		//缺少的动态库 复制到 默认的动态库路径
 		for _, v := range listNotFound {
-			err := cpFioLib64(v)
+			err := cpFioLib64(v, pwdPath)
 			if err != nil {
 				log.Println(err)
 				return false
 			}
 		}
-		if cmdFioCheckLocal() {
+		if cmdFioCheckLocal(pwdPath) {
 			log.Println("fio installed")
 		} else {
 			log.Println("fio install-Error")
@@ -201,8 +201,8 @@ func notFoundLib64(inputdata []string) []string {
 }
 
 //cpFioLib64 动态库 复制到 默认的动态库路径
-func cpFioLib64(input string) (err error) {
-	cmd := "cp ./fio-lib64/" + input + " /usr/lib64/"
+func cpFioLib64(input string, pwdPath string) (err error) {
+	cmd := "cp " + pwdPath + "/fio-lib64/" + input + " /usr/lib64/"
 	_, err = bc.CmdAndChangeDirToResAllInOne("./", cmd)
 	if err != nil {
 		log.Println("cp "+input+" error: ", err)
@@ -213,8 +213,8 @@ func cpFioLib64(input string) (err error) {
 }
 
 //lddFio 动态库检查
-func lddFio() (res []string, err error) {
-	res, err = bc.CmdAndChangeDirToResAllInOne("./", "./fio-lib64/ldd ./fio-lib64/fio")
+func lddFio(pwdPath string) (res []string, err error) {
+	res, err = bc.CmdAndChangeDirToResAllInOne("./", pwdPath+"/fio-lib64/ldd "+pwdPath+"/fio-lib64/fio")
 	if err != nil {
 		log.Println("ldd error: ", err)
 		return res, err
@@ -247,8 +247,8 @@ func cmdFioCheck() bool {
 }
 
 //cmdFioCheckLocal 检查fio是否已安装
-func cmdFioCheckLocal() bool {
-	resCmdfioCheck, err := bc.CmdAndChangeDirToResAllInOne("./", "./fio-lib64/fio --version")
+func cmdFioCheckLocal(pwdPath string) bool {
+	resCmdfioCheck, err := bc.CmdAndChangeDirToResAllInOne("./", pwdPath+"/fio-lib64/fio --version")
 	if err != nil {
 		log.Println("fio not installed: ", err)
 		return false
@@ -258,8 +258,8 @@ func cmdFioCheckLocal() bool {
 }
 
 //cmdFioTarLib64 解压tar包
-func cmdFioTarLib64() bool {
-	resCmdfioTar, err := bc.CmdAndChangeDirToResAllInOne("./", "tar -zxvf fio-lib64.tar")
+func cmdFioTarLib64(pwdPath string) bool {
+	resCmdfioTar, err := bc.CmdAndChangeDirToResAllInOne("./", "tar -zxvf "+pwdPath+"/fio-lib64.tar -C "+pwdPath+"/")
 	if err != nil {
 		log.Println("lib64 tar error: ", err)
 		return false
